@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <div>
+            <span>CD_DIST_OBSV : </span>
+            <input type="text" id="CD_DIST_OBSV" value="1005">
+        </div>
+        <br/>
+        <div>
+            <span>긴급 종류 : </span>
+            <select id="Parm1">
+                <option value="00">해제</option>
+                <option value="level1">레벨1</option>
+                <option value="level2">레벨2</option>
+                <option value="level3">레벨3</option>
+                <option value="level4">레벨4</option>
+            </select>
+        </div>
+        <br/>
+        <input type="button" value="start" onclick="action(this)">
+        <script>
+            function Send(url, obj)
+            {
+                return new Promise((resolve, reject) =>
+                {
+                    let rtv = new Object;
+                    const ajax = new XMLHttpRequest();
+
+                    ajax.open("POST", url);
+                    ajax.setRequestHeader('content-type', 'application/json');
+                    ajax.send(JSON.stringify(obj));
+
+                    ajax.onload = () => 
+                    {
+                        try
+                        {
+                            if( ajax.readyState === 4 && ajax.status === 200 )
+                            {
+                                rtv = ajax.response;
+                                resolve(JSON.parse(rtv));
+                            }
+                            else if( ajax.readyState === 4 && ajax.status >= 400 )
+                            {
+                                rtv.code = ajax.status;
+                                rtv.msg = ajax.statusText;
+                                reject(rtv);
+                            }
+                        }
+                        catch(ex)
+                        {
+                            reject(rtv);
+                        }
+                    }
+                });
+            }
+
+            async function action(e)
+            {
+                let obj = new Object;
+                obj.Cd_dist_obsv = document.querySelector("#CD_DIST_OBSV").value;
+                obj.parm = document.querySelector("#Parm1").value;
+                obj.action = e.value;
+
+                await Send("action.php", obj)
+                .then((data) => 
+                {
+                    alert("정상 처리 되었습니다. (SQL문은 F12 Console에서 확인)");
+                    console.log(data)
+                })
+                .catch((ex) => 
+                {
+                    alert("Catch (자세한 내용은 F12 Console에서 확인)");
+                    console.log(data)
+                });
+            }
+        </script>
+    </body>
+</html>

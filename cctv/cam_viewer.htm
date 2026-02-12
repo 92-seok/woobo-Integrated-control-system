@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <title>Cam Viewer</title>
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jsmpeg/0.1/jsmpg.js"></script>-->
+  <script src="../js/jsmpg.js"></script>
+</head>
+<body>
+
+<div><canvas id="canvas1"></canvas> 1</div>
+<div><canvas id="canvas2"></canvas> 2</div>
+<div><canvas id="canvas3"></canvas> 3</div>
+<div><canvas id="canvas4"></canvas> 4</div>
+<div><canvas id="canvas5"></canvas> 5</div>
+<div><canvas id="canvas6"></canvas> 6</div>
+<div><canvas id="canvas7"></canvas> 7</div>
+<div><canvas id="canvas8"></canvas> 8</div>
+<div><canvas id="canvas9"></canvas> 9</div>
+<div><canvas id="canvas10"></canvas> 10</div>
+
+<script>
+  var cam1 = new WebSocket('ws://127.0.0.1:9001');
+  var canvas1 = document.querySelector('#canvas1');
+  var player1 = new jsmpeg(cam1, {canvas:canvas1});
+  
+  var cam2 = new WebSocket('ws://127.0.0.1:9002');
+  var canvas2 = document.querySelector('#canvas2');
+  var player2 = new jsmpeg(cam2, {canvas:canvas2} );
+  
+  var cam3 = new WebSocket('ws://127.0.0.1:9003');
+  var canvas3 = document.querySelector('#canvas3');
+  var player3 = new jsmpeg(cam3, {canvas:canvas3} );  
+  
+  var cam4 = new WebSocket('ws://127.0.0.1:9004');
+  var canvas4 = document.querySelector('#canvas4');
+  var player4 = new jsmpeg(cam4, {canvas:canvas4});
+  
+  var cam5 = new WebSocket('ws://127.0.0.1:9005');
+  var canvas5 = document.querySelector('#canvas5');
+  var player5 = new jsmpeg(cam5, {canvas:canvas5});
+  
+  var cam6 = new WebSocket('ws://127.0.0.1:9006');
+  var canvas6 = document.querySelector('#canvas6');
+  var player6 = new jsmpeg(cam6, {canvas:canvas6});
+  
+  var cam7 = new WebSocket('ws://127.0.0.1:9007');
+  var canvas7 = document.querySelector('#canvas7');
+  var player7 = new jsmpeg(cam7, {canvas:canvas7});
+  
+  var cam8 = new WebSocket('ws://127.0.0.1:9008');
+  var canvas8 = document.querySelector('#canvas8');
+  var player8 = new jsmpeg(cam8, {canvas:canvas8});
+  
+  var cam9 = new WebSocket('ws://127.0.0.1:9009');
+  var canvas9 = document.querySelector('#canvas9');
+  var player9 = new jsmpeg(cam9, {canvas:canvas9});
+  
+  var cam10 = new WebSocket('ws://127.0.0.1:9010');
+  var canvas10 = document.querySelector('#canvas10');
+  var player10 = new jsmpeg(cam10, {canvas:canvas10});
+</script>
+
+</body>
+</html>
