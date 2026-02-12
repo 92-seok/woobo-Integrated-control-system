@@ -1,8 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { SmsLayout } from '@/pages/SmsLayout';
-import { SendMsg } from '@/pages/SendMsg';
-import { SendList } from '@/pages/SendList';
-import { AddrControl } from '@/pages/AddrControl';
+import { SmsPage } from '@/pages/SmsPage';
 import './App.css';
 
 function App() {
@@ -17,13 +14,8 @@ function App() {
           </div>
         }
       />
-      <Route path="/sms" element={<SmsLayout />}>
-        <Route index element={<Navigate to="/sms/send" replace />}></Route>
-        <Route path="send" element={<SendMsg />}></Route>
-        <Route path="list" element={<SendList />}></Route>
-        <Route path="address" element={<AddrControl />}></Route>
-      </Route>
-      <Route path="*" element={<Navigate to="/" replace />}></Route>
+      <Route path="/sms" element={<SmsPage />} />
+      {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
     </Routes>
   );
 }

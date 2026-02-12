@@ -1,0 +1,127 @@
+import { useState, useCallback } from 'react';
+import { Button } from '@/components/ui/button';
+import { Send, Info, FileText, ChevronDown } from 'lucide-react';
+
+const MAX_CHARS = 70;
+const MAX_TITLE = 30;
+
+export function MessageComposer() {
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
+  const [helpOpen, setHelpOpen] = useState(false);
+
+  const bodyCount = body.length;
+
+  const handleBodyChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const v = e.target.value;
+    if (v.length <= MAX_CHARS) setBody(v);
+  }, []);
+
+  const handleSend = useCallback(() => {
+    if (!title.trim()) {
+      alert('제목을 입력하세요.');
+      return;
+    }
+    if (!body.trim()) {
+      alert('내용을 입력하세요.');
+      return;
+    }
+    alert('발송 등록되었습니다. (API 연동 후 실제 전송)');
+  }, [title, body]);
+
+  return (
+    <div className="rounded-xl border border-border bg-card">
+      <div className="flex items-center gap-2 border-b border-border px-5 py-4">
+        <FileText className="h-4 w-4 text-primary" />
+        <h3 className="text-sm font-semibold text-card-foreground">메세지 입력</h3>
+      </div>
+
+      <div className={`flex flex-col gap-4 px-5 pt-5 transition-all duration-300 ${helpOpen ? 'pb-5' : 'pb-3'}`}>
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <label htmlFor="msg-title" className="text-xs font-medium text-muted-foreground">
+              제목
+            </label>
+            <span className="text-xs text-muted-foreground">
+              {title.length}/{MAX_TITLE}
+            </span>
+          </div>
+          <input
+            id="msg-title"
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value.slice(0, MAX_TITLE))}
+            placeholder="메세지 제목을 입력하세요"
+            className="h-10 w-full rounded-lg border border-border bg-background px-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <label htmlFor="msg-body" className="text-xs font-medium text-muted-foreground">
+              내용
+            </label>
+            <span className="text-xs tabular-nums text-muted-foreground">
+              <span className={bodyCount > MAX_CHARS ? 'font-semibold text-destructive' : ''}>
+                {bodyCount}
+              </span>
+              /{MAX_CHARS}(글자)
+            </span>
+          </div>
+          <textarea
+            id="msg-body"
+            value={body}
+            onChange={handleBodyChange}
+            placeholder="메세지 내용을 입력하세요 (70자 이내)"
+            rows={6}
+            className="w-full resize-none rounded-lg border border-border bg-background px-4 py-3 text-sm leading-relaxed text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <div className="flex items-start justify-between gap-4">
+            <button
+              type="button"
+              onClick={() => setHelpOpen((prev) => !prev)}
+              className="flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50
+  transition-all"
+            >
+              <Info className="h-3.5 w-3.5" />
+              도움말 {helpOpen ? '닫기' : '보기'}
+              <ChevronDown
+                className={`h-3.5 w-3.5 transition-transform duration-300 ${helpOpen ? 'rotate-180' : ''}`}
+              />
+            </button>
+
+            <Button
+              type="button"
+              onClick={handleSend}
+              className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90"
+              size="lg"
+            >
+              <Send className="h-4 w-4" />
+              전송
+            </Button>
+          </div>
+
+          <div
+            className={`grid transition-all duration-300 ease-in-out ${helpOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+              }`}
+          >
+            <div className="overflow-hidden">
+              <ul className="flex flex-col gap-1 px-3 py-2.5 rounded-lg bg-muted/30 border border-border text-xs leading-relaxed text-muted-foreground items-start">
+                <li>◈ 수신자 선택</li>
+                <li>- SMS를 전송받을 수신자를 선택합니다.</li>
+                <li>- 수신자는 상단의 연락처관리에서 추가 또는 수정할 수 있습니다.</li>
+                <br />
+                <li>◈ 메세지 입력</li>
+                <li>- 보낼 문자의 제목과 내용을 입력합니다.</li>
+                <li>- 제목은 상단의 발송내역에 기록됩니다.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
