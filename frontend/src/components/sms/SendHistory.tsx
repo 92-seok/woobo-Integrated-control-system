@@ -1,12 +1,6 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Clock, CheckCircle2, XCircle } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface HistoryItem {
   id: string;
@@ -25,39 +19,55 @@ const sampleHistory: HistoryItem[] = [
 ];
 
 const statusConfig = {
-  success: { icon: CheckCircle2, label: '전송완료', className: 'text-emerald-500' },
-  failed: { icon: XCircle, label: '전송실패', className: 'text-destructive' },
-  pending: { icon: Clock, label: '전송대기중', className: 'text-amber-500' },
+  success: {
+    icon: CheckCircle2,
+    label: '전송완료',
+    className: 'text-emerald-700 bg-emerald-50 ring-1 ring-emerald-200',
+  },
+  failed: {
+    icon: XCircle,
+    label: '전송실패',
+    className: 'text-red-700 bg-red-50 ring-1 ring-red-200',
+  },
+  pending: {
+    icon: Clock,
+    label: '전송대기중',
+    className: 'text-amber-700 bg-amber-50 ring-1 ring-amber-200',
+  },
 };
+
+const tableHeaders = ['번호', '제목', '수신자', '발송일시', '상태'];
 
 export function SendHistory() {
   return (
-    <div className="rounded-xl border border-border bg-card">
+    <div className="border-border overflow-hidden rounded-lg border bg-white shadow-sm">
+      {/* 카드 헤더 */}
+      <div className="border-border bg-muted/40 flex items-center gap-2.5 border-b px-5 py-3">
+        <Clock className="text-primary h-4 w-4" />
+        <h3 className="font-jakarta text-foreground text-sm font-semibold">발송 내역</h3>
+        <span className="bg-muted text-muted-foreground ring-border rounded-full px-2.5 py-0.5 text-xs font-medium ring-1">
+          {sampleHistory.length}건
+        </span>
+      </div>
+
       <Table className="table-fixed">
         <colgroup>
-          <col className="w-24" />
-          <col className="w-auto" />
+          <col className="w-20" />
+          <col />
           <col className="w-50" />
           <col className="w-50" />
-          <col className="w-50" />
+          <col className="w-30" />
         </colgroup>
         <TableHeader>
-          <TableRow className="border-border bg-muted/50 hover:bg-muted/50">
-            <TableHead className="w-[5%] text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              번호
-            </TableHead>
-            <TableHead className="text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              제목
-            </TableHead>
-            <TableHead className="w-[15%] text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              수신자
-            </TableHead>
-            <TableHead className="w-[15%] text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              발송일시
-            </TableHead>
-            <TableHead className="w-[8%] text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              상태
-            </TableHead>
+          <TableRow className="border-border bg-muted/30 hover:bg-muted/30">
+            {tableHeaders.map((h) => (
+              <TableHead
+                key={h}
+                className="text-muted-foreground px-4 py-2.5 text-center text-xs font-semibold tracking-wide uppercase"
+              >
+                {h}
+              </TableHead>
+            ))}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -67,23 +77,27 @@ export function SendHistory() {
             return (
               <TableRow
                 key={item.id}
-                className={`border-border transition-colors hover:bg-muted/30 ${idx === sampleHistory.length - 1 ? 'border-b-0' : ''}`}
+                className={cn(
+                  'border-border/60 hover:bg-muted/20 transition-colors',
+                  idx === sampleHistory.length - 1 && 'border-b-0'
+                )}
               >
-                <TableCell className="text-center text-sm font-medium text-card-foreground">
-                  {item.id}
+                <TableCell className="font-mono-data text-muted-foreground px-4 py-3 text-center text-xs">
+                  {item.id.padStart(3, '0')}
                 </TableCell>
-                <TableCell className="text-center text-sm font-medium text-card-foreground">
+                <TableCell className="text-foreground px-4 py-3 text-center text-sm font-semibold">
                   {item.title}
                 </TableCell>
-                <TableCell className="text-center text-sm text-muted-foreground">
-                  {item.recipient}
-                </TableCell>
-                <TableCell className="text-center text-sm font-mono text-muted-foreground">
+                <TableCell className="text-muted-foreground px-4 py-3 text-center text-sm">{item.recipient}</TableCell>
+                <TableCell className="font-mono-data text-muted-foreground px-4 py-3 text-center text-xs">
                   {item.date}
                 </TableCell>
-                <TableCell className="text-center">
+                <TableCell className="px-2 py-4 text-center">
                   <span
-                    className={`inline-flex items-center gap-1.5 text-xs font-medium ${config.className}`}
+                    className={cn(
+                      'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium',
+                      config.className
+                    )}
                   >
                     <StatusIcon className="h-3.5 w-3.5" />
                     {config.label}
