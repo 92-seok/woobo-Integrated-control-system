@@ -38,23 +38,23 @@ export function AppSidebar({ collapsed = false, onToggle }: AppSidebarProps) {
   return (
     <aside
       className={cn(
-        'relative flex h-screen flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground transition-all duration-300 ease-in-out',
+        'border-sidebar-border bg-sidebar text-sidebar-foreground relative flex h-screen flex-col border-r transition-all duration-300 ease-in-out',
         collapsed ? 'w-[72px]' : 'w-[240px]'
       )}
     >
       {/* 로고 영역 */}
       <div className="flex items-center gap-3 px-4 py-5">
-        <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-sidebar-primary/20">
-          <Bell className="h-7 w-7 text-sidebar-primary" />
+        <div className="bg-sidebar-primary/20 relative flex h-10 w-10 shrink-0 items-center justify-center rounded-lg">
+          <Bell className="text-sidebar-primary h-7 w-7" />
           <span
-            className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-sidebar bg-emerald-400"
+            className="border-sidebar absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 bg-emerald-400"
             style={{ animation: 'pulse-dot 2.5s ease-in-out infinite' }}
           />
         </div>
         {!collapsed && (
           <div className="overflow-hidden">
-            <p className="font-jakarta text-sm font-bold leading-tight text-white">지능형 통합관제 시스템</p>
-            <p className="mt-1 text-[10px] font-bold tracking-wider text-sidebar-foreground/40 uppercase">
+            <p className="font-jakarta text-sm leading-tight font-bold text-white">지능형 통합관제 시스템</p>
+            <p className="text-sidebar-foreground/40 mt-1 text-[10px] font-bold tracking-wider uppercase">
               Control System
             </p>
           </div>
@@ -62,7 +62,7 @@ export function AppSidebar({ collapsed = false, onToggle }: AppSidebarProps) {
       </div>
 
       {/* 구분선 */}
-      <div className="mx-4 h-px bg-sidebar-border" />
+      <div className="bg-sidebar-border mx-4 h-px" />
 
       {/* 네비게이션 */}
       <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto px-2 py-4">
@@ -72,9 +72,9 @@ export function AppSidebar({ collapsed = false, onToggle }: AppSidebarProps) {
             to={item.to}
             className={({ isActive }) =>
               cn(
-                'group relative flex items-center gap-5 rounded-lg px-5 py-7 text-sm font-bold transition-all duration-150',
+                'group text-md relative flex items-center gap-5 rounded-lg px-5 py-7 font-bold transition-all duration-150',
                 isActive
-                  ? 'bg-white/15 text-white before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-5 before:w-[3px] before:rounded-r-full before:bg-white'
+                  ? 'bg-white/15 text-white before:absolute before:top-1/2 before:left-0 before:h-5 before:w-[3px] before:-translate-y-1/2 before:rounded-r-full before:bg-white'
                   : 'text-white/60 hover:bg-white/10 hover:text-white/90'
               )
             }
@@ -88,7 +88,7 @@ export function AppSidebar({ collapsed = false, onToggle }: AppSidebarProps) {
 
       {/* 하단 버튼 */}
       <div className="flex flex-col gap-0.5 px-2 pb-4">
-        <div className="mx-1 mb-2 h-px bg-sidebar-border" />
+        <div className="bg-sidebar-border mx-1 mb-2 h-px" />
         <button
           type="button"
           onClick={onToggle}

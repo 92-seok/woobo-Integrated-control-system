@@ -1,7 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @custom-variant dark (&:is(.dark *));
 
@@ -19,41 +19,41 @@
   --radius: 0.5rem;
 
   /* ─── Government Dashboard Light Theme ─── */
-  --background:           oklch(0.955 0.008 245);
-  --foreground:           oklch(0.17  0.03  255);
-  --card:                 oklch(1     0     0);
-  --card-foreground:      oklch(0.17  0.03  255);
-  --popover:              oklch(1     0     0);
-  --popover-foreground:   oklch(0.17  0.03  255);
+  --background: oklch(0.955 0.008 245);
+  --foreground: oklch(0.17 0.03 255);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.17 0.03 255);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.17 0.03 255);
   /* PHP SMS 기존 색상 #2b3280 기반 */
-  --primary:              oklch(0.28  0.15  268);
-  --primary-foreground:   oklch(0.99  0     0);
-  --secondary:            oklch(0.93  0.01  245);
-  --secondary-foreground: oklch(0.17  0.03  268);
-  --muted:                oklch(0.94  0.01  245);
-  --muted-foreground:     oklch(0.50  0.04  250);
-  --accent:               oklch(0.93  0.01  245);
-  --accent-foreground:    oklch(0.17  0.03  268);
-  --destructive:          oklch(0.58  0.22  27);
-  --border:               oklch(0.88  0.02  245);
-  --input:                oklch(0.94  0.01  245);
-  --ring:                 oklch(0.28  0.15  268);
+  --primary: oklch(0.28 0.15 268);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.93 0.01 245);
+  --secondary-foreground: oklch(0.17 0.03 268);
+  --muted: oklch(0.94 0.01 245);
+  --muted-foreground: oklch(0.5 0.04 250);
+  --accent: oklch(0.93 0.01 245);
+  --accent-foreground: oklch(0.17 0.03 268);
+  --destructive: oklch(0.58 0.22 27);
+  --border: oklch(0.88 0.02 245);
+  --input: oklch(0.94 0.01 245);
+  --ring: oklch(0.28 0.15 268);
 
-  --chart-1: oklch(0.40  0.18 255);
-  --chart-2: oklch(0.55  0.18 160);
-  --chart-3: oklch(0.70  0.16 80);
-  --chart-4: oklch(0.55  0.18 290);
-  --chart-5: oklch(0.58  0.22 27);
+  --chart-1: oklch(0.4 0.18 255);
+  --chart-2: oklch(0.55 0.18 160);
+  --chart-3: oklch(0.7 0.16 80);
+  --chart-4: oklch(0.55 0.18 290);
+  --chart-5: oklch(0.58 0.22 27);
 
   /* 사이드바: 밝은 보라 계열 (#6c34dd 기반) */
-  --sidebar:                    oklch(0.32  0.22  290);
-  --sidebar-foreground:         oklch(0.97  0.01  280);
-  --sidebar-primary:            oklch(0.90  0.06  280);
-  --sidebar-primary-foreground: oklch(0.32  0.22  290);
-  --sidebar-accent:             oklch(0.40  0.20  290);
-  --sidebar-accent-foreground:  oklch(0.97  0.01  280);
-  --sidebar-border:             oklch(0.42  0.16  290);
-  --sidebar-ring:               oklch(0.90  0.06  280);
+  --sidebar: oklch(0.32 0.22 290);
+  --sidebar-foreground: oklch(0.97 0.01 280);
+  --sidebar-primary: oklch(0.9 0.06 280);
+  --sidebar-primary-foreground: oklch(0.32 0.22 290);
+  --sidebar-accent: oklch(0.4 0.2 290);
+  --sidebar-accent-foreground: oklch(0.97 0.01 280);
+  --sidebar-border: oklch(0.42 0.16 290);
+  --sidebar-ring: oklch(0.9 0.06 280);
 }
 
 body {
@@ -74,7 +74,6 @@ h1 {
   line-height: 1.1;
 }
 
-
 button:not([role='checkbox']) {
   border-radius: var(--radius);
   border: 1px solid transparent;
@@ -85,25 +84,48 @@ button:not([role='checkbox']) {
   transition: all 0.18s;
 }
 button:not([role='checkbox']):focus-visible {
-  outline: 2px solid oklch(0.40 0.18 255 / 0.5);
+  outline: 2px solid oklch(0.4 0.18 255 / 0.5);
   outline-offset: 2px;
 }
 
 /* ─── Custom Scrollbar ─── */
-::-webkit-scrollbar        { width: 5px; height: 5px; }
-::-webkit-scrollbar-track  { background: oklch(0.94 0.01 245); }
-::-webkit-scrollbar-thumb  { background: oklch(0.82 0.02 245); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: oklch(0.40 0.18 255 / 0.5); }
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: oklch(0.94 0.01 245);
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(0.82 0.02 245);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.4 0.18 255 / 0.5);
+}
 
 /* ─── Keyframe Animations ─── */
 @keyframes pulse-dot {
-  0%, 100% { opacity: 1;   transform: scale(1); }
-  50%       { opacity: 0.5; transform: scale(1.4); }
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.4);
+  }
 }
 
 @keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ─── Utility Classes ─── */
@@ -127,45 +149,45 @@ button:not([role='checkbox']):focus-visible {
 }
 
 @theme inline {
-  --radius-sm:  calc(var(--radius) - 2px);
-  --radius-md:  var(--radius);
-  --radius-lg:  calc(var(--radius) + 2px);
-  --radius-xl:  calc(var(--radius) + 4px);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
 
-  --color-background:            var(--background);
-  --color-foreground:            var(--foreground);
-  --color-card:                  var(--card);
-  --color-card-foreground:       var(--card-foreground);
-  --color-popover:               var(--popover);
-  --color-popover-foreground:    var(--popover-foreground);
-  --color-primary:               var(--primary);
-  --color-primary-foreground:    var(--primary-foreground);
-  --color-secondary:             var(--secondary);
-  --color-secondary-foreground:  var(--secondary-foreground);
-  --color-muted:                 var(--muted);
-  --color-muted-foreground:      var(--muted-foreground);
-  --color-accent:                var(--accent);
-  --color-accent-foreground:     var(--accent-foreground);
-  --color-destructive:           var(--destructive);
-  --color-border:                var(--border);
-  --color-input:                 var(--input);
-  --color-ring:                  var(--ring);
-  --color-chart-1:               var(--chart-1);
-  --color-chart-2:               var(--chart-2);
-  --color-chart-3:               var(--chart-3);
-  --color-chart-4:               var(--chart-4);
-  --color-chart-5:               var(--chart-5);
-  --color-sidebar:               var(--sidebar);
-  --color-sidebar-foreground:    var(--sidebar-foreground);
-  --color-sidebar-primary:       var(--sidebar-primary);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent:        var(--sidebar-accent);
+  --color-sidebar-accent: var(--sidebar-accent);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border:        var(--sidebar-border);
-  --color-sidebar-ring:          var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 }
 
 @layer base {
@@ -182,6 +204,6 @@ button:not([role='checkbox']):focus-visible {
     text-decoration: inherit;
   }
   a:hover {
-    color: oklch(0.20 0.12 268);
+    color: oklch(0.2 0.12 268);
   }
 }

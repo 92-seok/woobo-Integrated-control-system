@@ -46,7 +46,7 @@ export function MessageComposer({ selectedRecipients }: MessageComposerProps) {
     // API 요청 Payload 구성
     const payload = {
       title: title.trim(),
-      PhoneNumber: selectedRecipients.map((r) => r.phone),
+      PhoneNumber: selectedRecipients.map((r) => r.PhoneNumber),
       Message: body.trim(),
       Auth: '관리자',
     };
@@ -87,7 +87,7 @@ export function MessageComposer({ selectedRecipients }: MessageComposerProps) {
         {/* 선택된 수신자 미리보기 */}
         {selectedRecipients.length > 0 && (
           <span className="text-muted-foreground text-xs">
-            {selectedRecipients.map((r) => r.name).join(', ')} ({selectedRecipients.length}명)
+            {selectedRecipients.map((r) => r.Name).join(', ')} ({selectedRecipients.length}명)
           </span>
         )}
       </div>
