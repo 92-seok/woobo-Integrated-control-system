@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "WebFetch(domain:www.aitmpl.com)",
-      "WebSearch",
-      "WebFetch(domain:agentskills.me)"
-    ]
-  }
-}
