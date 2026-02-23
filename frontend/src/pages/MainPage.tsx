@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // 마커 이미지 import
 import rainMarkerImg from '@/assets/rain_marker.png';
@@ -18,6 +18,7 @@ import dPlaceMarkerErrImg from '@/assets/dPlace_marker_error.png';
 import snowMarkerImg from '@/assets/snow_marker.png';
 import snowMarkerErrImg from '@/assets/snow_marker_error.png';
 import cctvMarkerImg from '@/assets/cctvMarker.png';
+import AssistantPanel from '@/components/layout/AssistantPanel';
 
 // 마커 종류 타입
 type MarkerType = 'rain' | 'water' | 'flood' | 'gate' | 'broad' | 'display' | 'dPlace' | 'snow' | 'cctv';
@@ -181,6 +182,7 @@ const SAMPLE_MARKERS: MarkerData[] = [
 
 export function MainPage() {
   const mapRef = useRef<HTMLDivElement>(null);
+  const [panelOpen, setPanelOpen] = useState(true);
 
   useEffect(() => {
     const KAKAO_KEY = import.meta.env.VITE_KAKAO_MAP_KEY;
@@ -276,14 +278,21 @@ export function MainPage() {
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
       {/* 헤더 */}
-      <header className="border-border border-b bg-white px-6 py-4 shadow-sm">
-        <h1 className="font-jakarta text-foreground text-base font-bold">상황화면</h1>
-        <p className="text-muted-foreground text-xs">실시간 지도 모니터링</p>
+      <header className="flex items-center justify-center border-b bg-white px-5 py-3.5 shadow-sm">
+        <div>
+          <p className="text-xl font-bold tracking-wide text-slate-800">Intelligent Integrated Control System</p>
+          <p className="mt-0.5 text-[14px] text-slate-400">실시간 통합 관제 시스템</p>
+        </div>
       </header>
 
-      {/* 지도 영역 */}
-      <div className="flex-1 p-4">
-        <div ref={mapRef} className="h-full w-full rounded-xl border" style={{ minHeight: '500px' }} />
+      {/* 지도 영역  + 우측 패널 */}
+      <div className="relative flex flex-1 overflow-hidden">
+        {/* 지도 영역 */}
+        <div className="flex-1 p-3">
+          <div ref={mapRef} className="h-full w-full rounded-xl border shadow-sm" />
+        </div>
+
+        <AssistantPanel open={panelOpen} onToggle={() => setPanelOpen(!panelOpen)} />
       </div>
     </div>
   );

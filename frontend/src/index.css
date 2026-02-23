@@ -77,7 +77,7 @@ h1 {
 button:not([role='checkbox']) {
   border-radius: var(--radius);
   border: 1px solid transparent;
-  font-size: 1em;
+  /* font-size: 1em; */
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;

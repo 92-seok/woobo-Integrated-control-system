@@ -17,6 +17,11 @@ export default defineConfig({
         target: 'http://192.168.0.101:5000',
         changeOrigin: true,
       },
+      '/data-api': {
+        target: 'http://apis.data.go.kr',
+        changeOrigin: true,
+        rewrite: (path: string) => path.replace(/^\/data-api/, ''),
+      },
     },
   },
 });
