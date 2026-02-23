@@ -1,5 +1,184 @@
 import { useEffect, useRef } from 'react';
 
+// 마커 이미지 import
+import rainMarkerImg from '@/assets/rain_marker.png';
+import rainMarkerErrImg from '@/assets/rain_marker_error.png';
+import waterMarkerImg from '@/assets/water_marker.png';
+import waterMarkerErrImg from '@/assets/water_marker_error.png';
+import floodMarkerImg from '@/assets/floodMarker.png';
+import floodMarkerErrImg from '@/assets/floodMarker_error.png';
+import gateMarkerImg from '@/assets/gate_marker.png';
+import gateMarkerErrImg from '@/assets/gate_marker_error.png';
+import broadMarkerImg from '@/assets/broadMarker.png';
+import broadMarkerErrImg from '@/assets/broadMarker_error.png';
+import displayMarkerImg from '@/assets/display_marker.png';
+import displayMarkerErrImg from '@/assets/display_marker_error.png';
+import dPlaceMarkerImg from '@/assets/dPlace_marker.png';
+import dPlaceMarkerErrImg from '@/assets/dPlace_marker_error.png';
+import snowMarkerImg from '@/assets/snow_marker.png';
+import snowMarkerErrImg from '@/assets/snow_marker_error.png';
+import cctvMarkerImg from '@/assets/cctvMarker.png';
+
+// 마커 종류 타입
+type MarkerType = 'rain' | 'water' | 'flood' | 'gate' | 'broad' | 'display' | 'dPlace' | 'snow' | 'cctv';
+
+// 마커 데이터 구조
+interface MarkerData {
+  type: MarkerType;
+  lat: number;
+  lng: number;
+  name: string;
+  status: 'normal' | 'error';
+}
+
+// 타입별 이미지 매핑
+const MARKER_IMAGES: Record<MarkerType, { normal: string; error: string }> = {
+  rain: { normal: rainMarkerImg, error: rainMarkerErrImg },
+  water: { normal: waterMarkerImg, error: waterMarkerErrImg },
+  flood: { normal: floodMarkerImg, error: floodMarkerErrImg },
+  gate: { normal: gateMarkerImg, error: gateMarkerErrImg },
+  broad: { normal: broadMarkerImg, error: broadMarkerErrImg },
+  display: { normal: displayMarkerImg, error: displayMarkerErrImg },
+  dPlace: { normal: dPlaceMarkerImg, error: dPlaceMarkerErrImg },
+  snow: { normal: snowMarkerImg, error: snowMarkerErrImg },
+  cctv: { normal: cctvMarkerImg, error: cctvMarkerImg },
+};
+
+// 마커 타입별 색상, 라벨, 버튼
+const MARKER_CONFIG: Record<MarkerType, { color: string; label: string; btn: string }> = {
+  rain: { color: '#42569d', label: '강우량', btn: '데이터검색' },
+  water: { color: '#329fe0', label: '수위', btn: '데이터검색' },
+  flood: { color: '#f94045', label: '침수', btn: '데이터검색' },
+  gate: { color: '#e66ba1', label: '차단기', btn: '차단기관리' },
+  broad: { color: '#f3732c', label: '예경보', btn: '방송관리' },
+  display: { color: '#ffb200', label: '전광판', btn: '전광판관리' },
+  dPlace: { color: '#a5614a', label: '변위', btn: '데이터검색' },
+  snow: { color: '#8643ae', label: '적설', btn: '데이터검색' },
+  cctv: { color: '#2b7a78', label: 'CCTV', btn: 'CCTV보기' },
+};
+
+// 인포윈도우 HTML 생성 함수
+function createInfoContent(data: MarkerData): string {
+  const cfg = MARKER_CONFIG[data.type];
+  const isError = data.status === 'error';
+
+  return `
+    <div style="
+      min-width:220px;
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow:0 4px 20px rgba(0,0,0,.15);
+      font-family:'Pretendard','Apple SD Gothic Neo',sans-serif;
+    ">
+      <!-- 헤더 -->
+      <div style="
+        background:${cfg.color};
+        color:#fff;
+        padding:10px 14px;
+        display:flex;
+        align-items:center;
+        gap:8px;
+        position:relative;
+      ">
+        <span style="
+          display:inline-block;
+          width:8px;height:8px;
+          border-radius:50%;
+          background:${isError ? '#ff6b6b' : '#69db7c'};
+          box-shadow:0 0 6px ${isError ? '#ff6b6b' : '#69db7c'};
+        "></span>
+        <strong style="font-size:13px;letter-spacing:-0.3px;">${data.name}</strong>
+        <span
+          onclick="window.__closeInfoWindow()"
+          style="
+            position:absolute;
+            right:10px;
+            top:50%;
+            transform:translateY(-50%);
+            width:22px;height:22px;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            border-radius:50%;
+            background:rgba(255,255,255,.15);
+            backdrop-filter:blur(4px);
+            cursor:pointer;
+            font-size:14px;
+            line-height:1;
+            transition:background .2s;
+          "
+          onmouseover="this.style.background='rgba(255,255,255,.35)'"
+          onmouseout="this.style.background='rgba(255,255,255,.15)'"
+        >&times;</span>
+      </div>
+
+      <!-- 데이터 영역 -->
+      <div style="background:#fff;">
+        <table style="width:100%;border-collapse:collapse;">
+          <tr>
+            <td style="
+              padding:9px 14px;
+              font-size:12px;
+              color:#6b7280;
+              width:45%;
+              border-bottom:1px solid #f3f4f6;
+            ">${cfg.label}상태</td>
+            <td style="
+              padding:9px 14px;
+              font-size:12px;
+              font-weight:600;
+              color:${isError ? '#ef4444' : '#10b981'};
+              text-align:right;
+              border-bottom:1px solid #f3f4f6;
+            ">${isError ? '이상' : '정상'}</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- 하단 버튼 -->
+      <div style="padding:8px 12px;background:#fafafa;border-top:1px solid #f0f0f0;">
+        <div
+          style="
+            display:block;
+            width:100%;
+            padding:7px 0;
+            background:${cfg.color};
+            color:#fff;
+            font-size:12px;
+            font-weight:500;
+            border-radius:6px;
+            cursor:pointer;
+            text-align:center;
+            letter-spacing:-0.2px;
+            transition:opacity .2s;
+          "
+          onmouseover="this.style.opacity='0.85'"
+          onmouseout="this.style.opacity='1'"
+        >${cfg.btn}</div>
+      </div>
+    </div>
+    <div style="
+      width:0;height:0;
+      border-left:10px solid transparent;
+      border-right:10px solid transparent;
+      border-top:10px solid #fafafa;
+      margin:0 auto;
+    "></div>
+  `;
+}
+
+// 샘플이미지 -> 추후 실 데이터 연동
+const SAMPLE_MARKERS: MarkerData[] = [
+  { type: 'rain', lat: 37.4346, lng: 127.1741, name: '강우량계', status: 'normal' },
+  { type: 'water', lat: 37.4326, lng: 127.1721, name: '수위계', status: 'error' },
+  { type: 'flood', lat: 37.4356, lng: 127.1751, name: '침수센서', status: 'normal' },
+  { type: 'gate', lat: 37.4316, lng: 127.1761, name: '차단기', status: 'normal' },
+  { type: 'broad', lat: 37.4366, lng: 127.1711, name: '예경보', status: 'normal' },
+  { type: 'display', lat: 37.4336, lng: 127.1771, name: '전광판', status: 'error' },
+  { type: 'snow', lat: 37.4376, lng: 127.1731, name: '적설계', status: 'normal' },
+  { type: 'cctv', lat: 37.4306, lng: 127.1701, name: 'CCTV', status: 'normal' },
+];
+
 export function MainPage() {
   const mapRef = useRef<HTMLDivElement>(null);
 
@@ -9,13 +188,68 @@ export function MainPage() {
     const initMap = () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const kakao = (window as any).kakao;
+
       kakao.maps.load(() => {
         if (!mapRef.current) return;
-        const options = {
+
+        const map = new kakao.maps.Map(mapRef.current, {
           center: new kakao.maps.LatLng(37.4336, 127.1731),
           level: 3,
+        });
+
+        // 현재 열린 인포윈도우 추적(한개만 열리기)
+        let openInfoWindow: any = null;
+
+        // 글로벌 닫기 함수
+        (window as any).__closeInfoWindow = () => {
+          if (openInfoWindow) {
+            openInfoWindow.setMap(null);
+            openInfoWindow = null;
+          }
         };
-        new kakao.maps.Map(mapRef.current, options);
+
+        // 마커생성로직
+        SAMPLE_MARKERS.forEach((data) => {
+          // 이미지 설정
+          const imgSrc = MARKER_IMAGES[data.type][data.status];
+          const markerImage = new kakao.maps.MarkerImage(imgSrc, new kakao.maps.Size(35, 51));
+
+          // 마커 생성
+          const marker = new kakao.maps.Marker({
+            map,
+            position: new kakao.maps.LatLng(data.lat, data.lng),
+            title: data.name,
+            image: markerImage,
+          });
+
+          // 인포 윈도우 내용
+          // const content = `
+          // <div style="padding:10px 14px;min-width:150px;font-size:13px;line-height:1.6;">
+          //     <strong>${data.name}</strong><br/>
+          //     <span style="color:${data.status === 'error' ? '#e53e3e' : '#38a169'}">
+          //       ${data.status === 'error' ? '⚠ 이상' : '✓ 정상'}
+          //     </span>
+          //   </div>
+          // `;
+
+          // 인포윈도우 생성
+          const overlay = new kakao.maps.CustomOverlay({
+            content: createInfoContent(data),
+            position: new kakao.maps.LatLng(data.lat, data.lng),
+            yAnchor: 1.3,
+          });
+
+          // 클릭 -> 인포윈도우 열기/닫기
+          kakao.maps.event.addListener(marker, 'click', () => {
+            if (openInfoWindow) openInfoWindow.setMap(null);
+            if (openInfoWindow === overlay) {
+              openInfoWindow = null;
+            } else {
+              overlay.setMap(map);
+              openInfoWindow = overlay;
+            }
+          });
+        });
       });
     };
 
