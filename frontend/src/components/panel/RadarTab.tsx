@@ -28,7 +28,7 @@ function ImageViewer({ images, loading, error }: { images: string[]; loading: bo
 
   return (
     <>
-      <div className="relative aspect-square w-full overflow-hidden rounded-lg border bg-gray-50">
+      <div className="relative min-h-0 w-full flex-1 overflow-hidden rounded-lg border bg-gray-50">
         {loading ? (
           <div className="flex h-full items-center justify-center">
             <div className="h-5 w-5 animate-spin rounded-full border-2 border-violet-300 border-t-violet-600" />
@@ -100,7 +100,11 @@ export function RadarTab() {
       const items = json?.response?.body?.items?.item;
       if (items) {
         const list = Array.isArray(items) ? items : [items];
-        setRadarImages(list.map((i: Record<string, string>) => i['rdr-img-file']).filter(Boolean));
+        const urls = list
+          .flatMap((i: Record<string, unknown>) => i['rdr-img-file'])
+          .filter((u): u is string => typeof u === 'string')
+          .map((u) => u.replace('http://www.kma.go.kr', '/kma-img'));
+        setRadarImages(urls);
       } else {
         setRadarImages([]);
       }
@@ -128,10 +132,15 @@ export function RadarTab() {
       });
       const res = await fetch(`/data-api/1360000/SatlitImgInfoService/getInsightSatlit?${params}`);
       const json = await res.json();
+      // console.log(`위성 (${satType}) API 응답: `, JSON.stringify(json, null, 2));
       const items = json?.response?.body?.items?.item;
       if (items) {
         const list = Array.isArray(items) ? items : [items];
-        setSatImages(list.map((i: Record<string, string>) => i['satImgC-file']).filter(Boolean));
+        const urls = list
+          .flatMap((i: Record<string, unknown>) => i['satImgC-file'])
+          .filter((u): u is string => typeof u === 'string')
+          .map((u) => u.replace('http://www.kma.go.kr', '/kma-img'));
+        setSatImages(urls);
       } else {
         setSatImages([]);
       }
@@ -153,9 +162,9 @@ export function RadarTab() {
   }, [fetchSatellite]);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex h-full flex-col gap-2">
       {/* ── 레이더 영상 (위) ── */}
-      <div className="flex flex-col gap-2">
+      <div className="flex min-h-0 flex-1 flex-col gap-1">
         <h3 className="text-[16px] font-bold text-slate-600">레이더영상</h3>
         <ImageViewer images={radarImages} loading={radarLoading} error={radarError} />
       </div>
@@ -164,7 +173,7 @@ export function RadarTab() {
       <div className="h-px bg-gray-200" />
 
       {/* ── 위성 영상 (아래) ── */}
-      <div className="flex flex-col gap-2">
+      <div className="flex min-h-0 flex-1 flex-col gap-1">
         <div className="flex items-center justify-center">
           <h3 className="text-[16px] font-bold text-slate-600">위성영상</h3>
         </div>

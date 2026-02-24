@@ -22,6 +22,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path: string) => path.replace(/^\/data-api/, ''),
       },
+      '/kma-img': {
+        target: 'http://www.kma.go.kr',
+        changeOrigin: true,
+        rewrite: (path: string) => path.replace(/^\/kma-img/, ''),
+      },
     },
   },
 });

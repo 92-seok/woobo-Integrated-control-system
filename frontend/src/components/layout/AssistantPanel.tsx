@@ -2,6 +2,10 @@ import { useState } from 'react';
 import { BrainCircuit, ChevronLeft, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { RadarTab } from '../panel/RadarTab';
+import { AlertTab } from '../panel/AlertTab';
+import { DataTab } from '../panel/DataTab';
+import { EquipTab } from '../panel/EquipTab';
+import { AsTab } from '../panel/AsTab';
 
 const TABS = [
   { id: 'radar', label: '위성영상' },
@@ -75,12 +79,12 @@ export function AssistantPanel({ open, onToggle }: AssistantPanelProps) {
           </div>
 
           {/* 탭 콘텐츠 */}
-          <div className="flex-1 overflow-y-auto p-3">
+          <div className="flex min-h-0 flex-1 flex-col p-3 text-left">
             {activeTab === 'radar' && <RadarTab />}
-            {activeTab === 'alert' && <p className="pt-8 text-center text-[11px] text-gray-400">실시간현황 영역</p>}
-            {activeTab === 'data' && <p className="pt-8 text-center text-[11px] text-gray-400">계측현황 영역</p>}
-            {activeTab === 'equip' && <p className="pt-8 text-center text-[11px] text-gray-400">장비현황 영역</p>}
-            {activeTab === 'as' && <p className="pt-8 text-center text-[11px] text-gray-400">A/S접수 영역</p>}
+            {activeTab === 'alert' && <AlertTab />}
+            {activeTab === 'data' && <DataTab />}
+            {activeTab === 'equip' && <EquipTab />}
+            {activeTab === 'as' && <AsTab />}
           </div>
         </div>
       </div>

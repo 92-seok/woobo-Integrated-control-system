@@ -43,7 +43,7 @@ export function AppSidebar({ collapsed = false, onToggle }: AppSidebarProps) {
       )}
     >
       {/* 로고 영역 */}
-      <div className="flex items-center gap-3 px-4 py-5">
+      <div className="flex items-center gap-3 px-4 py-10">
         <div className="bg-sidebar-primary/20 relative flex h-10 w-10 shrink-0 items-center justify-center rounded-lg">
           <Bell className="text-sidebar-primary h-7 w-7" />
           <span
@@ -53,8 +53,8 @@ export function AppSidebar({ collapsed = false, onToggle }: AppSidebarProps) {
         </div>
         {!collapsed && (
           <div className="overflow-hidden">
-            <p className="font-jakarta text-sm leading-tight font-bold text-white">지능형 통합관제 시스템</p>
-            <p className="text-sidebar-foreground/40 mt-1 text-[10px] font-bold tracking-wider uppercase">
+            <p className="font-jakarta text-md leading-tight font-bold text-white">지능형 통합관제 시스템</p>
+            <p className="text-sidebar-foreground/40 mt-1 text-[11px] font-bold tracking-wider uppercase">
               Control System
             </p>
           </div>

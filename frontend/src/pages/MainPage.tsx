@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // 마커 이미지 import
 import rainMarkerImg from '@/assets/rain_marker.png';
@@ -46,16 +47,16 @@ const MARKER_IMAGES: Record<MarkerType, { normal: string; error: string }> = {
 };
 
 // 마커 타입별 색상, 라벨, 버튼
-const MARKER_CONFIG: Record<MarkerType, { color: string; label: string; btn: string }> = {
-  rain: { color: '#42569d', label: '강우량', btn: '데이터검색' },
-  water: { color: '#329fe0', label: '수위', btn: '데이터검색' },
-  flood: { color: '#f94045', label: '침수', btn: '데이터검색' },
-  gate: { color: '#e66ba1', label: '차단기', btn: '차단기관리' },
-  broad: { color: '#f3732c', label: '예경보', btn: '방송관리' },
-  display: { color: '#ffb200', label: '전광판', btn: '전광판관리' },
-  dPlace: { color: '#a5614a', label: '변위', btn: '데이터검색' },
-  snow: { color: '#8643ae', label: '적설', btn: '데이터검색' },
-  cctv: { color: '#2b7a78', label: 'CCTV', btn: 'CCTV보기' },
+const MARKER_CONFIG: Record<MarkerType, { color: string; label: string; btn: string; route: string }> = {
+  rain: { color: '#42569d', label: '강우량', btn: '데이터검색', route: '/data' },
+  water: { color: '#329fe0', label: '수위', btn: '데이터검색', route: '/data' },
+  flood: { color: '#f94045', label: '침수', btn: '데이터검색', route: '/data' },
+  gate: { color: '#e66ba1', label: '차단기', btn: '차단기관리', route: '/gate' },
+  broad: { color: '#f3732c', label: '예경보', btn: '방송관리', route: '/broad' },
+  display: { color: '#ffb200', label: '전광판', btn: '전광판관리', route: '/display' },
+  dPlace: { color: '#a5614a', label: '변위', btn: '데이터검색', route: '/data' },
+  snow: { color: '#8643ae', label: '적설', btn: '데이터검색', route: '/data' },
+  cctv: { color: '#2b7a78', label: 'CCTV', btn: 'CCTV보기', route: '/cctv' },
 };
 
 // 인포윈도우 HTML 생성 함수
@@ -139,6 +140,7 @@ function createInfoContent(data: MarkerData): string {
       <!-- 하단 버튼 -->
       <div style="padding:8px 12px;background:#fafafa;border-top:1px solid #f0f0f0;">
         <div
+          onclick="window.__navigateTo('${cfg.route}')"
           style="
             display:block;
             width:100%;
@@ -182,7 +184,41 @@ const SAMPLE_MARKERS: MarkerData[] = [
 
 export function MainPage() {
   const mapRef = useRef<HTMLDivElement>(null);
+  const mapInstanceRef = useRef<any>(null);
   const [panelOpen, setPanelOpen] = useState(true);
+  const [mapType, setMapType] = useState<'roadmap' | 'hybrid'>('hybrid');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    (window as any).__navigateTo = (path: string) => navigate(path);
+    return () => {
+      delete (window as any).__navigateTo;
+    };
+  }, [navigate]);
+
+  // 지도 타입 전환
+  const toggleMapType = () => {
+    const map = mapInstanceRef.current;
+    if (!map) return;
+    const kakao = (window as any).kakao;
+    if (mapType === 'hybrid') {
+      map.setMapTypeId(kakao.maps.MapTypeId.ROADMAP);
+      setMapType('roadmap');
+    } else {
+      map.setMapTypeId(kakao.maps.MapTypeId.HYBRID);
+      setMapType('hybrid');
+    }
+  };
+
+  // 줌 인/아웃
+  const zoomIn = () => {
+    const map = mapInstanceRef.current;
+    if (map) map.setLevel(map.getLevel() - 1);
+  };
+  const zoomOut = () => {
+    const map = mapInstanceRef.current;
+    if (map) map.setLevel(map.getLevel() + 1);
+  };
 
   useEffect(() => {
     const KAKAO_KEY = import.meta.env.VITE_KAKAO_MAP_KEY;
@@ -198,6 +234,10 @@ export function MainPage() {
           center: new kakao.maps.LatLng(37.4336, 127.1731),
           level: 3,
         });
+
+        // 하이브리드 기본 설정 + 인스턴스 저장
+        map.setMapTypeId(kakao.maps.MapTypeId.HYBRID);
+        mapInstanceRef.current = map;
 
         // 현재 열린 인포윈도우 추적(한개만 열리기)
         let openInfoWindow: any = null;
@@ -234,14 +274,14 @@ export function MainPage() {
           //   </div>
           // `;
 
-          // 인포윈도우 생성
+          // 커스텀오버레이 생성
           const overlay = new kakao.maps.CustomOverlay({
             content: createInfoContent(data),
             position: new kakao.maps.LatLng(data.lat, data.lng),
             yAnchor: 1.3,
           });
 
-          // 클릭 -> 인포윈도우 열기/닫기
+          // 클릭 -> 커스텀오버레이 열기/닫기
           kakao.maps.event.addListener(marker, 'click', () => {
             if (openInfoWindow) openInfoWindow.setMap(null);
             if (openInfoWindow === overlay) {
@@ -288,8 +328,37 @@ export function MainPage() {
       {/* 지도 영역  + 우측 패널 */}
       <div className="relative flex flex-1 overflow-hidden">
         {/* 지도 영역 */}
-        <div className="flex-1 p-3">
+        <div className="relative flex-1 p-3">
           <div ref={mapRef} className="h-full w-full rounded-xl border shadow-sm" />
+
+          {/* 지도 타입 변환 */}
+          <div className="absolute top-5 left-5 z-10">
+            <button
+              type="button"
+              onClick={toggleMapType}
+              className="rounded-lg bg-white px-3 py-2 text-[12px] font-medium text-slate-700 shadow-md transition-colors hover:bg-gray-50"
+            >
+              {mapType === 'hybrid' ? '일반지도' : '하이브리드'}
+            </button>
+          </div>
+
+          {/* 줌 컨트롤 */}
+          <div className="absolute top-15 left-5 z-10 flex flex-col">
+            <button
+              type="button"
+              onClick={zoomIn}
+              className="rounded-t-lg bg-white px-3 py-2 text-[16px] font-bold text-slate-600 shadow-md transition-colors hover:bg-gray-50"
+            >
+              +
+            </button>
+            <button
+              type="button"
+              onClick={zoomOut}
+              className="rounded-b-lg border-t bg-white px-3 py-2 text-[16px] font-bold text-slate-600 shadow-md transition-colors hover:bg-gray-50"
+            >
+              −
+            </button>
+          </div>
         </div>
 
         <AssistantPanel open={panelOpen} onToggle={() => setPanelOpen(!panelOpen)} />
