@@ -52,7 +52,7 @@ const MARKER_CONFIG: Record<MarkerType, { color: string; label: string; btn: str
   water: { color: '#329fe0', label: '수위', btn: '데이터검색', route: '/data' },
   flood: { color: '#f94045', label: '침수', btn: '데이터검색', route: '/data' },
   gate: { color: '#e66ba1', label: '차단기', btn: '차단기관리', route: '/gate' },
-  broad: { color: '#f3732c', label: '예경보', btn: '방송관리', route: '/broad' },
+  broad: { color: '#f3732c', label: '예경보', btn: '예경보관리', route: '/broad' },
   display: { color: '#ffb200', label: '전광판', btn: '전광판관리', route: '/display' },
   dPlace: { color: '#a5614a', label: '변위', btn: '데이터검색', route: '/data' },
   snow: { color: '#8643ae', label: '적설', btn: '데이터검색', route: '/data' },

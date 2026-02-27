@@ -40,8 +40,9 @@ function ImageViewer({ images, loading, error }: { images: string[]; loading: bo
         ) : images.length > 0 ? (
           <img src={images[idx]} alt="영상" className="h-full w-full object-contain" />
         ) : (
-          <div className="flex h-full items-center justify-center">
-            <span className="text-[11px] text-gray-400">영상 데이터 없음</span>
+          <div className="flex h-full flex-col items-center justify-center">
+            <span className="block text-[12px] text-gray-400">영상 데이터 없음</span>
+            <span className="block text-[10px] text-gray-400">(기상청 데이터가 없습니다)</span>
           </div>
         )}
       </div>

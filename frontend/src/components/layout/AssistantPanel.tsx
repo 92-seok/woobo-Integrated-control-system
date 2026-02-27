@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { BrainCircuit, ChevronLeft, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { RadarTab } from '../panel/RadarTab';
-import { AlertTab } from '../panel/AlertTab';
-import { DataTab } from '../panel/DataTab';
-import { EquipTab } from '../panel/EquipTab';
-import { AsTab } from '../panel/AsTab';
+import { RadarTab } from '../main-panel/RadarTab';
+import { AlertTab } from '../main-panel/AlertTab';
+import { DataTab } from '../main-panel/DataTab';
+import { EquipTab } from '../main-panel/EquipTab';
+import { AsTab } from '../main-panel/AsTab';
 
 const TABS = [
   { id: 'radar', label: '위성영상' },
