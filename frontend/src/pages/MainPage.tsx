@@ -2,23 +2,23 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // 마커 이미지 import
-import rainMarkerImg from '@/assets/rain_marker.png';
-import rainMarkerErrImg from '@/assets/rain_marker_error.png';
-import waterMarkerImg from '@/assets/water_marker.png';
-import waterMarkerErrImg from '@/assets/water_marker_error.png';
-import floodMarkerImg from '@/assets/floodMarker.png';
-import floodMarkerErrImg from '@/assets/floodMarker_error.png';
-import gateMarkerImg from '@/assets/gate_marker.png';
-import gateMarkerErrImg from '@/assets/gate_marker_error.png';
-import broadMarkerImg from '@/assets/broadMarker.png';
-import broadMarkerErrImg from '@/assets/broadMarker_error.png';
-import displayMarkerImg from '@/assets/display_marker.png';
-import displayMarkerErrImg from '@/assets/display_marker_error.png';
-import dPlaceMarkerImg from '@/assets/dPlace_marker.png';
-import dPlaceMarkerErrImg from '@/assets/dPlace_marker_error.png';
-import snowMarkerImg from '@/assets/snow_marker.png';
-import snowMarkerErrImg from '@/assets/snow_marker_error.png';
-import cctvMarkerImg from '@/assets/cctvMarker.png';
+import rainMarkerImg from '@/assets/markers/rain_marker.png';
+import rainMarkerErrImg from '@/assets/markers/rain_marker_error.png';
+import waterMarkerImg from '@/assets/markers/water_marker.png';
+import waterMarkerErrImg from '@/assets/markers/water_marker_error.png';
+import floodMarkerImg from '@/assets/markers/floodMarker.png';
+import floodMarkerErrImg from '@/assets/markers/floodMarker_error.png';
+import gateMarkerImg from '@/assets/markers/gate_marker.png';
+import gateMarkerErrImg from '@/assets/markers/gate_marker_error.png';
+import broadMarkerImg from '@/assets/markers/broadMarker.png';
+import broadMarkerErrImg from '@/assets/markers/broadMarker_error.png';
+import displayMarkerImg from '@/assets/markers/display_marker.png';
+import displayMarkerErrImg from '@/assets/markers/display_marker_error.png';
+import dPlaceMarkerImg from '@/assets/markers/dPlace_marker.png';
+import dPlaceMarkerErrImg from '@/assets/markers/dPlace_marker_error.png';
+import snowMarkerImg from '@/assets/markers/snow_marker.png';
+import snowMarkerErrImg from '@/assets/markers/snow_marker_error.png';
+import cctvMarkerImg from '@/assets/markers/cctvMarker.png';
 import AssistantPanel from '@/components/layout/AssistantPanel';
 
 // 마커 종류 타입
