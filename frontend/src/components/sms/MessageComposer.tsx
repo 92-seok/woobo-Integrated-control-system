@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Send, Info, FileText, ChevronDown, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import type { Recipient } from './RecipientTable';
 
 const MAX_CHARS = 70;
@@ -165,12 +166,7 @@ export function MessageComposer({ selectedRecipients }: MessageComposerProps) {
             </button>
 
             {/* 전송 버튼 - 로딩 상태 포함 */}
-            <button
-              type="button"
-              onClick={handleSend}
-              disabled={isSending}
-              className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-2 rounded-md px-5 py-2 text-sm font-semibold shadow-sm transition-all hover:shadow-md active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
-            >
+            <Button onClick={handleSend} disabled={isSending}>
               {isSending ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -182,7 +178,7 @@ export function MessageComposer({ selectedRecipients }: MessageComposerProps) {
                   전송
                 </>
               )}
-            </button>
+            </Button>
           </div>
 
           {/* 도움말 패널 */}

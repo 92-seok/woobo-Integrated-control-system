@@ -3,6 +3,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Clock, Trash2, ArrowLeft, ChevronLeft, ChevronRight, RefreshCw, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import { MOCK_HISTORY, MOCK_DETAIL } from '../../mocks/mock';
 import { BTYPE_LABELS, STATUS_CONFIG } from '../../types/broad';
 import type { BroadcastItem, BroadcastDetailItem } from '../../types/broad';
@@ -216,41 +217,36 @@ export function BroadcastHistory() {
         <div className="flex items-center gap-3">
           {/* 페이징 */}
           <div className="flex items-center gap-1.5">
-            <button
-              type="button"
+            <Button
+              variant="ghost"
+              size="icon-xs"
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={safePage <= 1}
-              className="border-border rounded border p-1 transition-colors hover:bg-gray-100 disabled:opacity-30"
             >
               <ChevronLeft className="h-3.5 w-3.5" />
-            </button>
+            </Button>
             <span className="text-foreground min-w-[3rem] text-center text-xs font-semibold">
               {safePage} / {totalPages}
             </span>
-            <button
-              type="button"
+            <Button
+              variant="ghost"
+              size="icon-xs"
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               disabled={safePage >= totalPages}
-              className="border-border rounded border p-1 transition-colors hover:bg-gray-100 disabled:opacity-30"
             >
               <ChevronRight className="h-3.5 w-3.5" />
-            </button>
+            </Button>
           </div>
           {/* 삭제 버튼 */}
-          <button
-            type="button"
+          <Button
+            variant="destructive"
+            size="sm"
             onClick={handleDelete}
             disabled={selectedIds.size === 0}
-            className={cn(
-              'flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold shadow-sm transition-all active:scale-[0.98]',
-              selectedIds.size > 0
-                ? 'bg-red-500 text-white hover:bg-red-600'
-                : 'bg-muted text-muted-foreground cursor-not-allowed opacity-50'
-            )}
           >
             <Trash2 className="h-3.5 w-3.5" />
             {selectedIds.size > 0 ? `${selectedIds.size}건 삭제` : '삭제'}
-          </button>
+          </Button>
         </div>
       </div>
 

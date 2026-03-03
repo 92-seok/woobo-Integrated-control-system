@@ -4,6 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { Plus, Trash2, Phone, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import { MOCK_CID_LIST } from '../../mocks/mock';
 import type { Equipment, CidItem } from '../../types/broad';
 
@@ -105,28 +106,19 @@ export function CidManager({ equipments }: CidManagerProps) {
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <button
-            type="button"
+          <Button
+            variant="destructive"
+            size="sm"
             onClick={handleDelete}
             disabled={selectedIds.size === 0}
-            className={cn(
-              'flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold shadow-sm transition-all',
-              selectedIds.size > 0
-                ? 'bg-red-500 text-white hover:bg-red-600'
-                : 'bg-muted text-muted-foreground cursor-not-allowed opacity-50'
-            )}
           >
             <Trash2 className="h-3.5 w-3.5" />
             삭제
-          </button>
-          <button
-            type="button"
-            onClick={() => setModalOpen(true)}
-            className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold shadow-sm transition-all active:scale-[0.98]"
-          >
+          </Button>
+          <Button size="sm" onClick={() => setModalOpen(true)}>
             <Plus className="h-3.5 w-3.5" />
             CID 등록
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -138,25 +130,25 @@ export function CidManager({ equipments }: CidManagerProps) {
             {' / '}
             {cidList.length}건
           </span>
-          <button
-            type="button"
+          <Button
+            variant="ghost"
+            size="icon-xs"
             onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
             disabled={safePage <= 1}
-            className="border-border rounded border p-1 transition-colors hover:bg-gray-100 disabled:opacity-30"
           >
             <ChevronLeft className="h-3.5 w-3.5" />
-          </button>
+          </Button>
           <span className="text-foreground min-w-[3rem] text-center text-xs font-semibold">
             {safePage} / {totalPages}
           </span>
-          <button
-            type="button"
+          <Button
+            variant="ghost"
+            size="icon-xs"
             onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
             disabled={safePage >= totalPages}
-            className="border-border rounded border p-1 transition-colors hover:bg-gray-100 disabled:opacity-30"
           >
             <ChevronRight className="h-3.5 w-3.5" />
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -286,24 +278,20 @@ export function CidManager({ equipments }: CidManagerProps) {
               </div>
 
               <div className="mt-5 flex justify-end gap-2">
-                <button
-                  type="button"
+                <Button
+                  variant="outline"
+                  size="sm"
                   onClick={() => {
                     setModalOpen(false);
                     setFormEquip('');
                     setFormCid('');
                   }}
-                  className="text-gray-60 rounded-md border border-gray-300 px-4 py-2 text-xs hover:bg-gray-50"
                 >
                   취소
-                </button>
-                <button
-                  type="button"
-                  onClick={handleAdd}
-                  className="bg-primary text-primary-foreground rounded-md px-4 py-2 text-xs font-semibold"
-                >
+                </Button>
+                <Button size="sm" onClick={handleAdd}>
                   등록
-                </button>
+                </Button>
               </div>
             </div>
           </div>,

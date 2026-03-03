@@ -3,6 +3,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Clock, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 interface HistoryItem {
   Idx: number;
@@ -89,20 +90,15 @@ export function SendHistory() {
             {history.length}건
           </span>
         </div>
-        <button
-          type="button"
+        <Button
+          variant="destructive"
+          size="sm"
           onClick={handleDelete}
           disabled={selectedIds.size === 0}
-          className={cn(
-            'flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold shadow-sm transition-all active:scale-[0.98]',
-            selectedIds.size > 0
-              ? 'bg-red-500 text-white hover:bg-red-200'
-              : 'bg-muted text-muted-foreground cursor-net-allowed opacity-50'
-          )}
         >
           <Trash2 className="h-3.5 w-3.5" />
           {selectedIds.size > 0 ? `${selectedIds.size}건 삭제` : '삭제'}
-        </button>
+        </Button>
       </div>
 
       <Table>

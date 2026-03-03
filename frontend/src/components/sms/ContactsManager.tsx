@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Plus, Pencil, Trash2, BookUser } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 interface Contact {
   Idx: number;
@@ -132,14 +133,10 @@ export function ContactsManager({ onRefresh }: ContactsManagerProps) {
             {contacts.length}명
           </span>
         </div>
-        <button
-          type="button"
-          onClick={openAddModal}
-          className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold shadow-sm transition-all active:scale-[0.98]"
-        >
+        <Button size="sm" onClick={openAddModal}>
           <Plus className="h-3.5 w-3.5" />
           연락처 추가
-        </button>
+        </Button>
       </div>
 
       <Table className="table-fixed">
@@ -293,20 +290,16 @@ export function ContactsManager({ onRefresh }: ContactsManagerProps) {
 
               {/* 버튼 */}
               <div className="mt-5 flex justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={() => setModalOpen(false)}
-                  className="rounded-md border border-gray-300 px-4 py-2 text-xs text-gray-600 hover:bg-gray-50"
-                >
+                <Button variant="outline" size="sm" onClick={() => setModalOpen(false)}>
                   취소
-                </button>
-                <button
-                  type="button"
+                </Button>
+                <Button
+                  variant={modalMode === 'delete' ? 'destructive' : 'default'}
+                  size="sm"
                   onClick={handleSubmit}
-                  className="bg-primary text-primary-foreground rounded-md px-4 py-2 text-xs font-semibold"
                 >
                   {modalMode === 'delete' ? '삭제' : '저장'}
-                </button>
+                </Button>
               </div>
             </div>
           </div>,

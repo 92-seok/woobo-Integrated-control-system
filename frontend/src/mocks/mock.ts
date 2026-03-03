@@ -1,6 +1,7 @@
 import type { Equipment, BroadGroup, MessageMent, BroadcastItem, BroadcastDetailItem, CidItem } from '../types/broad';
+import type { GateEquipment, GateStatus, GateControlHistory } from '../types/gate';
 
-// 장비 샘플 (PHP wb_equip 테이블 기준)
+// -------------- 장비 샘플 (예경보) --------------
 export const MOCK_EQUIPMENTS: Equipment[] = [
   {
     CD_DIST_OBSV: '001',
@@ -248,7 +249,7 @@ export const MOCK_CID_LIST: CidItem[] = [
     CidCode: 1,
     CD_DIST_OBSV: '001',
     NM_DIST_OBSV: '강남관측소',
-    Cid: '0212345678',
+    Cid: '012-2345-6789',
     CStatus: 'end',
     RegDate: '2026-02-20 10:00:00',
   },
@@ -256,7 +257,7 @@ export const MOCK_CID_LIST: CidItem[] = [
     CidCode: 2,
     CD_DIST_OBSV: '002',
     NM_DIST_OBSV: '서초관측소',
-    Cid: '0223456789',
+    Cid: '012-2345-6780',
     CStatus: 'end',
     RegDate: '2026-02-20 10:05:00',
   },
@@ -264,7 +265,7 @@ export const MOCK_CID_LIST: CidItem[] = [
     CidCode: 3,
     CD_DIST_OBSV: '005',
     NM_DIST_OBSV: '영등포관측소',
-    Cid: '0256789012',
+    Cid: '012-5678-9012',
     CStatus: 'ing',
     RegDate: '2026-02-27 09:30:00',
   },
@@ -272,8 +273,130 @@ export const MOCK_CID_LIST: CidItem[] = [
     CidCode: 4,
     CD_DIST_OBSV: '007',
     NM_DIST_OBSV: '용산관측소',
-    Cid: '0278901234',
+    Cid: '012-7890-1234',
     CStatus: 'error',
     RegDate: '2026-02-27 09:35:00',
+  },
+];
+
+// -------------- 장비 샘플 (차단기) --------------
+
+// 차단기 장비 목록
+export const MOCK_GATE_EQUIPMENTS: GateEquipment[] = [
+  {
+    CD_DIST_OBSV: '0123',
+    NM_DIST_OBSV: '우보차단기 1',
+    ConnIP: '192.168.1.6',
+    ConnPort: '4096',
+    DTL_ADRES: '경기도 성남시 중원구 갈마치로 215',
+    LAT: '37.5012',
+    LON: '127.0396',
+    USE_YN: '1',
+  },
+  {
+    CD_DIST_OBSV: '0124',
+    NM_DIST_OBSV: '우보차단기 2',
+    ConnIP: '192.168.2.6',
+    ConnPort: '4096',
+    DTL_ADRES: '경기도 성남시 중원구 갈마치로 215',
+    LAT: '37.5045',
+    LON: '126.9970',
+    USE_YN: '1',
+  },
+  {
+    CD_DIST_OBSV: '0125',
+    NM_DIST_OBSV: '우보차단기 3',
+    ConnIP: '192.168.3.6',
+    ConnPort: '4096',
+    DTL_ADRES: '경기도 성남시 중원구 갈마치로 215',
+    LAT: '37.5133',
+    LON: '127.1001',
+    USE_YN: '1',
+  },
+  {
+    CD_DIST_OBSV: '0126',
+    NM_DIST_OBSV: '우보차단기 4',
+    ConnIP: '192.168.4.6',
+    ConnPort: '4096',
+    DTL_ADRES: '경기도 성남시 중원구 갈마치로 215',
+    LAT: '37.4784',
+    LON: '126.9516',
+    USE_YN: '1',
+  },
+];
+
+// 차단기 현재상태
+export const MOCK_GATE_STATUSES: GateStatus[] = [
+  { CD_DIST_OBSV: '0123', Gate: 'open', RegDate: '2026-03-03 10:01:11' },
+  { CD_DIST_OBSV: '0124', Gate: 'close', RegDate: '2026-03-03 09:40:15' },
+  { CD_DIST_OBSV: '0125', Gate: 'close', RegDate: '2026-03-02 17:10:33' },
+  { CD_DIST_OBSV: '0126', Gate: 'open', RegDate: '2026-02-28 15:24:22' },
+];
+
+// 차단기 제어 이력
+export const MOCK_GATE_HISTORY: GateControlHistory[] = [
+  {
+    GCtrCode: 1,
+    CD_DIST_OBSV: '0213',
+    NM_DIST_OBSV: '우보차단기 1',
+    Gate: 'open',
+    GStatus: 'end',
+    RegDate: '2026-03-03 08:00:00',
+  },
+  {
+    GCtrCode: 2,
+    CD_DIST_OBSV: '0214',
+    NM_DIST_OBSV: '우보차단기 2',
+    Gate: 'close',
+    GStatus: 'end',
+    RegDate: '2026-03-03 07:30:00',
+  },
+  {
+    GCtrCode: 3,
+    CD_DIST_OBSV: '0213',
+    NM_DIST_OBSV: '우보차단기 3',
+    Gate: 'close',
+    GStatus: 'end',
+    RegDate: '2026-03-02 18:00:00',
+  },
+  {
+    GCtrCode: 4,
+    CD_DIST_OBSV: '0215',
+    NM_DIST_OBSV: '우보차단기 4',
+    Gate: 'open',
+    GStatus: 'error',
+    RegDate: '2026-03-02 15:30:00',
+  },
+  {
+    GCtrCode: 5,
+    CD_DIST_OBSV: '0216',
+    NM_DIST_OBSV: '우보차단기 5',
+    Gate: 'close',
+    GStatus: 'end',
+    RegDate: '2026-03-02 14:00:00',
+  },
+  {
+    GCtrCode: 6,
+    CD_DIST_OBSV: '0214',
+    NM_DIST_OBSV: '우보차단기 6',
+    Gate: 'open',
+    GStatus: 'end',
+    RegDate: '2026-03-01 09:00:00',
+  },
+  {
+    GCtrCode: 7,
+    CD_DIST_OBSV: '0215',
+    NM_DIST_OBSV: '우보차단기 7',
+    Gate: 'close',
+    GStatus: 'ing',
+    RegDate: '2026-03-01 08:00:00',
+  },
+  {
+    GCtrCode: 8,
+    CD_DIST_OBSV: '0213',
+    NM_DIST_OBSV: '우보차단기 8',
+    Gate: 'open',
+    GStatus: 'end',
+    RegDate: '2026-02-28  16:00:00',
   },
 ];

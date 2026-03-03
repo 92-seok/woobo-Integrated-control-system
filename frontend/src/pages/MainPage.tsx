@@ -318,10 +318,22 @@ export function MainPage() {
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
       {/* 헤더 */}
-      <header className="flex items-center justify-center border-b bg-white px-5 py-3.5 shadow-sm">
+      <header className="border-border flex items-center justify-between border-b bg-white px-6 py-4 shadow-sm">
         <div>
-          <p className="text-xl font-bold tracking-wide text-slate-800">Intelligent Integrated Control System</p>
-          <p className="mt-0.5 text-[14px] text-slate-400">실시간 통합 관제 시스템</p>
+          <h1 className="font-jakarta text-foreground text-base font-bold">상황화면</h1>
+          <p className="text-muted-foreground text-xs">실시간 통합 관제 시스템</p>
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="hidden items-center gap-2 sm:flex">
+            <span
+              className="h-2 w-2 rounded-full bg-emerald-500"
+              style={{ animation: 'pulse-dot 2s ease-in-out infinite' }}
+            />
+            <span className="text-muted-foreground text-xs">시스템 정상</span>
+          </div>
+          <div className="bg-primary text-primary-foreground flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold shadow-sm">
+            관
+          </div>
         </div>
       </header>
 
@@ -336,7 +348,7 @@ export function MainPage() {
             <button
               type="button"
               onClick={toggleMapType}
-              className="rounded-lg bg-white px-3 py-2 text-[12px] font-medium text-slate-700 shadow-md transition-colors hover:bg-gray-50"
+              className="rounded-lg bg-white px-3 py-2 text-[12px] font-medium text-foreground shadow-md transition-colors hover:bg-gray-50"
             >
               {mapType === 'hybrid' ? '일반지도' : '하이브리드'}
             </button>
@@ -347,14 +359,14 @@ export function MainPage() {
             <button
               type="button"
               onClick={zoomIn}
-              className="rounded-t-lg bg-white px-3 py-2 text-[16px] font-bold text-slate-600 shadow-md transition-colors hover:bg-gray-50"
+              className="rounded-t-lg bg-white px-3 py-2 text-[16px] font-bold text-muted-foreground shadow-md transition-colors hover:bg-gray-50"
             >
               +
             </button>
             <button
               type="button"
               onClick={zoomOut}
-              className="rounded-b-lg border-t bg-white px-3 py-2 text-[16px] font-bold text-slate-600 shadow-md transition-colors hover:bg-gray-50"
+              className="rounded-b-lg border-t bg-white px-3 py-2 text-[16px] font-bold text-muted-foreground shadow-md transition-colors hover:bg-gray-50"
             >
               −
             </button>

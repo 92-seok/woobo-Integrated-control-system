@@ -1,9 +1,8 @@
 import {
   Monitor,
-  Search,
-  Radio,
-  PanelTop,
-  Shield,
+  ChartColumn,
+  Volume2,
+  TvMinimal,
   CircleParking,
   MessageSquare,
   SlidersHorizontal,
@@ -12,16 +11,17 @@ import {
   Bell,
   LogOut,
   ChevronLeft,
+  DoorOpen,
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
 const navItems = [
   { icon: Monitor, label: '상황화면', to: '/' },
-  { icon: Search, label: '데이터검색', to: '/data' },
-  { icon: Radio, label: '방송관리', to: '/broad' },
-  { icon: PanelTop, label: '전광판관리', to: '/display' },
-  { icon: Shield, label: '차단기관리', to: '/gate' },
+  { icon: ChartColumn, label: '데이터검색', to: '/data' },
+  { icon: Volume2, label: '방송관리', to: '/broad' },
+  { icon: TvMinimal, label: '전광판관리', to: '/display' },
+  { icon: DoorOpen, label: '차단기관리', to: '/gate' },
   { icon: CircleParking, label: '주차장관리', to: '/parking' },
   { icon: MessageSquare, label: 'SMS관리', to: '/sms' },
   { icon: SlidersHorizontal, label: '임계치관리', to: '/alert' },

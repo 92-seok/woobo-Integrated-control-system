@@ -3,6 +3,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 import { Radio, Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import type { Equipment, BroadGroup } from '../../types/broad';
 
 interface EquipmentSelectorProps {
@@ -137,25 +138,25 @@ export function EquipmentSelector({ equipments, groups, selectedIds, onSelectedC
           <span className="text-muted-foreground mr-1 text-[11px]">
             {filtered.length}건 중 {(safePage - 1) * PER_PAGE + 1}-{Math.min(safePage * PER_PAGE, filtered.length)}
           </span>
-          <button
-            type="button"
+          <Button
+            variant="ghost"
+            size="icon-xs"
             onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
             disabled={safePage <= 1}
-            className="border-border rounded border p-1 transition-colors hover:bg-gray-100 disabled:opacity-30"
           >
             <ChevronLeft className="h-3.5 w-3.5" />
-          </button>
+          </Button>
           <span className="text-foreground min-w-[3rem] text-center text-xs font-semibold">
             {safePage} / {totalPages}
           </span>
-          <button
-            type="button"
+          <Button
+            variant="ghost"
+            size="icon-xs"
             onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
             disabled={safePage >= totalPages}
-            className="border-border rounded border p-1 transition-colors hover:bg-gray-100 disabled:opacity-30"
           >
             <ChevronRight className="h-3.5 w-3.5" />
-          </button>
+          </Button>
         </div>
       </div>
 
