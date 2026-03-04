@@ -1,5 +1,6 @@
 import type { Equipment, BroadGroup, MessageMent, BroadcastItem, BroadcastDetailItem, CidItem } from '../types/broad';
 import type { GateEquipment, GateStatus, GateControlHistory } from '../types/gate';
+import type { ParkingGroup, ParkingGate, CarRecord, CarStatsRow, ServiceProcess } from '@/types/parking';
 
 // -------------- 장비 샘플 (예경보) --------------
 export const MOCK_EQUIPMENTS: Equipment[] = [
@@ -398,5 +399,427 @@ export const MOCK_GATE_HISTORY: GateControlHistory[] = [
     Gate: 'open',
     GStatus: 'end',
     RegDate: '2026-02-28  16:00:00',
+  },
+];
+
+// -------------- 장비 샘플 (주차장) --------------
+
+// 주차장 그룹
+export const MOCK_PARKING_GROUPS: ParkingGroup[] = [
+  {
+    ParkGroupCode: 1,
+    ParkGroupName: '우보주차장 A',
+    ParkGroupAddr: '경기도 성남시 중원구 갈마치로 215',
+    ParkJoinGate: 'LP01,LP02',
+  },
+  {
+    ParkGroupCode: 2,
+    ParkGroupName: '우보주차장 B',
+    ParkGroupAddr: '경기도 성남시 중원구 갈마치로 300',
+    ParkJoinGate: 'LP03,LP04',
+  },
+  {
+    ParkGroupCode: 3,
+    ParkGroupName: '우보주차장 C',
+    ParkGroupAddr: '경기도 성남시 수정구 태평로 55',
+    ParkJoinGate: 'LP05',
+  },
+];
+
+// LPR 차단기 (wb_equip WHERE GB_OBSV='LP')
+export const MOCK_PARKING_GATES: ParkingGate[] = [
+  { CD_DIST_OBSV: 'LP01', NM_DIST_OBSV: 'A동 입구 카메라', DTL_ADRES: '경기도 성남시 중원구 갈마치로 215' },
+  { CD_DIST_OBSV: 'LP02', NM_DIST_OBSV: 'A동 출구 카메라', DTL_ADRES: '경기도 성남시 중원구 갈마치로 215' },
+  { CD_DIST_OBSV: 'LP03', NM_DIST_OBSV: 'B동 입구 카메라', DTL_ADRES: '경기도 성남시 중원구 갈마치로 300' },
+  { CD_DIST_OBSV: 'LP04', NM_DIST_OBSV: 'B동 출구 카메라', DTL_ADRES: '경기도 성남시 중원구 갈마치로 300' },
+  { CD_DIST_OBSV: 'LP05', NM_DIST_OBSV: 'C동 입출구 카메라', DTL_ADRES: '경기도 성남시 수정구 태평로 55' },
+];
+
+// 차량 입출차 내역 (hns_lprdata)
+export const MOCK_CAR_RECORDS: CarRecord[] = [
+  {
+    idx: 1,
+    CarNumber: '12가3456',
+    EventDateTime: '2026-03-03 08:30:00',
+    DeviceCode: '01',
+    CD_DIST_OBSV: 'LP01',
+    NM_DIST_OBSV: 'A동 입구 카메라',
+    ParkGroupName: '우보주차장 A',
+  },
+  {
+    idx: 2,
+    CarNumber: '34나7890',
+    EventDateTime: '2026-03-03 08:45:00',
+    DeviceCode: '01',
+    CD_DIST_OBSV: 'LP03',
+    NM_DIST_OBSV: 'B동 입구 카메라',
+    ParkGroupName: '우보주차장 B',
+  },
+  {
+    idx: 3,
+    CarNumber: '56다1234',
+    EventDateTime: '2026-03-03 09:10:00',
+    DeviceCode: '02',
+    CD_DIST_OBSV: 'LP02',
+    NM_DIST_OBSV: 'A동 출구 카메라',
+    ParkGroupName: '우보주차장 A',
+  },
+  {
+    idx: 4,
+    CarNumber: '78라5678',
+    EventDateTime: '2026-03-03 09:30:00',
+    DeviceCode: '01',
+    CD_DIST_OBSV: 'LP05',
+    NM_DIST_OBSV: 'C동 입출구 카메라',
+    ParkGroupName: '우보주차장 C',
+  },
+  {
+    idx: 5,
+    CarNumber: '12가3456',
+    EventDateTime: '2026-03-03 10:00:00',
+    DeviceCode: '02',
+    CD_DIST_OBSV: 'LP02',
+    NM_DIST_OBSV: 'A동 출구 카메라',
+    ParkGroupName: '우보주차장 A',
+  },
+  {
+    idx: 6,
+    CarNumber: '90마9012',
+    EventDateTime: '2026-03-03 10:15:00',
+    DeviceCode: '01',
+    CD_DIST_OBSV: 'LP01',
+    NM_DIST_OBSV: 'A동 입구 카메라',
+    ParkGroupName: '우보주차장 A',
+  },
+  {
+    idx: 7,
+    CarNumber: '34나7890',
+    EventDateTime: '2026-03-03 11:20:00',
+    DeviceCode: '02',
+    CD_DIST_OBSV: 'LP04',
+    NM_DIST_OBSV: 'B동 출구 카메라',
+    ParkGroupName: '우보주차장 B',
+  },
+  {
+    idx: 8,
+    CarNumber: '23바4567',
+    EventDateTime: '2026-03-03 12:00:00',
+    DeviceCode: '01',
+    CD_DIST_OBSV: 'LP03',
+    NM_DIST_OBSV: 'B동 입구 카메라',
+    ParkGroupName: '우보주차장 B',
+  },
+  {
+    idx: 9,
+    CarNumber: '45사6789',
+    EventDateTime: '2026-03-02 14:30:00',
+    DeviceCode: '01',
+    CD_DIST_OBSV: 'LP01',
+    NM_DIST_OBSV: 'A동 입구 카메라',
+    ParkGroupName: '우보주차장 A',
+  },
+  {
+    idx: 10,
+    CarNumber: '45사6789',
+    EventDateTime: '2026-03-02 17:00:00',
+    DeviceCode: '02',
+    CD_DIST_OBSV: 'LP02',
+    NM_DIST_OBSV: 'A동 출구 카메라',
+    ParkGroupName: '우보주차장 A',
+  },
+  {
+    idx: 11,
+    CarNumber: '67아8901',
+    EventDateTime: '2026-03-02 09:00:00',
+    DeviceCode: '01',
+    CD_DIST_OBSV: 'LP05',
+    NM_DIST_OBSV: 'C동 입출구 카메라',
+    ParkGroupName: '우보주차장 C',
+  },
+  {
+    idx: 12,
+    CarNumber: '67아8901',
+    EventDateTime: '2026-03-02 18:30:00',
+    DeviceCode: '02',
+    CD_DIST_OBSV: 'LP05',
+    NM_DIST_OBSV: 'C동 입출구 카메라',
+    ParkGroupName: '우보주차장 C',
+  },
+];
+
+// 입출차 통계 (일별 샘플 - 24시간)
+export const MOCK_CAR_STATS_DAY: CarStatsRow[] = [
+  {
+    ParkGroupName: '우보주차장 A',
+    direction: 'in',
+    values: [0, 0, 0, 0, 0, 1, 3, 8, 12, 10, 6, 4, 3, 5, 7, 9, 8, 6, 3, 2, 1, 0, 0, 0],
+    max: 12,
+    total: 88,
+  },
+  {
+    ParkGroupName: '우보주차장 A',
+    direction: 'out',
+    values: [0, 0, 0, 0, 0, 0, 1, 2, 5, 7, 8, 6, 4, 3, 5, 8, 10, 12, 9, 6, 3, 1, 0, 0],
+    max: 12,
+    total: 90,
+  },
+  {
+    ParkGroupName: '우보주차장 B',
+    direction: 'in',
+    values: [0, 0, 0, 0, 0, 0, 2, 5, 8, 6, 4, 3, 2, 3, 5, 6, 5, 4, 2, 1, 0, 0, 0, 0],
+    max: 8,
+    total: 56,
+  },
+  {
+    ParkGroupName: '우보주차장 B',
+    direction: 'out',
+    values: [0, 0, 0, 0, 0, 0, 1, 2, 4, 5, 6, 5, 3, 2, 4, 5, 7, 8, 6, 3, 1, 0, 0, 0],
+    max: 8,
+    total: 62,
+  },
+  {
+    ParkGroupName: '우보주차장 C',
+    direction: 'in',
+    values: [0, 0, 0, 0, 0, 0, 1, 3, 5, 4, 2, 1, 1, 2, 3, 4, 3, 2, 1, 0, 0, 0, 0, 0],
+    max: 5,
+    total: 32,
+  },
+  {
+    ParkGroupName: '우보주차장 C',
+    direction: 'out',
+    values: [0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 3, 2, 1, 2, 3, 4, 5, 4, 2, 1, 0, 0, 0],
+    max: 5,
+    total: 37,
+  },
+];
+
+// 입출차 통계 (월별 샘플 - 31일)
+export const MOCK_CAR_STATS_MONTH: CarStatsRow[] = [
+  {
+    ParkGroupName: '우보주차장 A',
+    direction: 'in',
+    values: [
+      88, 92, 85, 90, 78, 0, 0, 95, 87, 91, 83, 88, 76, 0, 0, 93, 89, 86, 90, 82, 0, 0, 94, 88, 91, 85, 87, 0, 0, 92,
+      88,
+    ],
+    max: 95,
+    total: 2073,
+  },
+  {
+    ParkGroupName: '우보주차장 A',
+    direction: 'out',
+    values: [
+      90, 88, 87, 92, 80, 0, 0, 93, 89, 90, 85, 86, 78, 0, 0, 91, 90, 88, 92, 84, 0, 0, 92, 90, 89, 87, 85, 0, 0, 90,
+      86,
+    ],
+    max: 93,
+    total: 2097,
+  },
+  {
+    ParkGroupName: '우보주차장 B',
+    direction: 'in',
+    values: [
+      56, 60, 52, 58, 45, 0, 0, 62, 55, 59, 50, 54, 44, 0, 0, 61, 57, 53, 58, 48, 0, 0, 60, 56, 58, 52, 54, 0, 0, 59,
+      55,
+    ],
+    max: 62,
+    total: 1281,
+  },
+  {
+    ParkGroupName: '우보주차장 B',
+    direction: 'out',
+    values: [
+      62, 58, 54, 60, 48, 0, 0, 60, 57, 61, 53, 56, 46, 0, 0, 59, 60, 55, 60, 50, 0, 0, 61, 58, 60, 54, 56, 0, 0, 61,
+      57,
+    ],
+    max: 62,
+    total: 1321,
+  },
+  {
+    ParkGroupName: '우보주차장 C',
+    direction: 'in',
+    values: [
+      32, 35, 30, 33, 25, 0, 0, 36, 31, 34, 28, 32, 24, 0, 0, 35, 33, 30, 34, 27, 0, 0, 34, 32, 33, 29, 31, 0, 0, 34,
+      30,
+    ],
+    max: 36,
+    total: 708,
+  },
+  {
+    ParkGroupName: '우보주차장 C',
+    direction: 'out',
+    values: [
+      37, 33, 32, 35, 28, 0, 0, 34, 33, 36, 30, 33, 26, 0, 0, 35, 34, 32, 36, 29, 0, 0, 36, 34, 35, 31, 33, 0, 0, 35,
+      32,
+    ],
+    max: 37,
+    total: 730,
+  },
+];
+
+// 입출차 통계 (연별 샘플 - 12개월)
+export const MOCK_CAR_STATS_YEAR: CarStatsRow[] = [
+  {
+    ParkGroupName: '우보주차장 A',
+    direction: 'in',
+    values: [2650, 2400, 2073, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    max: 2650,
+    total: 7123,
+  },
+  {
+    ParkGroupName: '우보주차장 A',
+    direction: 'out',
+    values: [2680, 2430, 2097, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    max: 2680,
+    total: 7207,
+  },
+  {
+    ParkGroupName: '우보주차장 B',
+    direction: 'in',
+    values: [1620, 1470, 1281, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    max: 1620,
+    total: 4371,
+  },
+  {
+    ParkGroupName: '우보주차장 B',
+    direction: 'out',
+    values: [1680, 1500, 1321, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    max: 1680,
+    total: 4501,
+  },
+  {
+    ParkGroupName: '우보주차장 C',
+    direction: 'in',
+    values: [890, 810, 708, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    max: 890,
+    total: 2408,
+  },
+  {
+    ParkGroupName: '우보주차장 C',
+    direction: 'out',
+    values: [920, 840, 730, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    max: 920,
+    total: 2490,
+  },
+];
+
+// PM2 서비스 상태
+export const MOCK_SERVICE_PROCESS: ServiceProcess = {
+  name: 'hnsLpr',
+  status: 'online',
+  cpu: 2.3,
+  memory: 52428800, // ~50MB
+  restarts: 0,
+  uptime: 86400000 * 3, // 3일
+};
+
+// -------------- 보고서 (Report) --------------
+import type {
+  WaterLevelData,
+  RainfallData,
+  DisplacementData,
+  SoilMoistureData,
+  TiltData,
+  SnowData,
+  FloodData,
+  AlertStatus,
+} from '@/types/report';
+
+// 활성 관측 종류 (GB_OBSV 코드)
+export const MOCK_ACTIVE_OBSERVATIONS: string[] = ['01', '02', '03', '04', '06', '08', '21'];
+
+// 수위 데이터
+export const MOCK_WATER_LEVEL: WaterLevelData[] = [
+  { CD_DIST_OBSV: '0201', NM_DIST_OBSV: '우보교', current: 1.234 },
+  { CD_DIST_OBSV: '0202', NM_DIST_OBSV: '갈마치교', current: 0.856 },
+  { CD_DIST_OBSV: '0203', NM_DIST_OBSV: '태평교', current: 2.105 },
+];
+
+// 강우 데이터
+export const MOCK_RAINFALL: RainfallData[] = [
+  { CD_DIST_OBSV: '0101', NM_DIST_OBSV: '강남관측소', yyesterday: 12.5, yesterday: 8.0, today: 3.5 },
+  { CD_DIST_OBSV: '0102', NM_DIST_OBSV: '서초관측소', yyesterday: 10.0, yesterday: 6.5, today: null },
+  { CD_DIST_OBSV: '0103', NM_DIST_OBSV: '송파관측소', yyesterday: null, yesterday: 5.0, today: 2.0 },
+  { CD_DIST_OBSV: '0104', NM_DIST_OBSV: '관악관측소', yyesterday: 15.0, yesterday: 9.5, today: 4.0 },
+];
+
+// 변위 데이터
+export const MOCK_DISPLACEMENT: DisplacementData[] = [
+  { CD_DIST_OBSV: '0301', NM_DIST_OBSV: '갈마치 1구간', SUB_OBSV: 'A', current: 0.3, accumulated: 2.8 },
+  { CD_DIST_OBSV: '0301', NM_DIST_OBSV: '갈마치 1구간', SUB_OBSV: 'B', current: 0.1, accumulated: 1.5 },
+  { CD_DIST_OBSV: '0302', NM_DIST_OBSV: '갈마치 2구간', SUB_OBSV: 'A', current: 0.5, accumulated: 4.2 },
+];
+
+// 함수비 데이터
+export const MOCK_SOIL_MOISTURE: SoilMoistureData[] = [
+  { NM_DIST_OBSV: '갈마치 1지구', current: 23.5 },
+  { NM_DIST_OBSV: '갈마치 2지구', current: 31.2 },
+];
+
+// 경사 데이터
+export const MOCK_TILT: TiltData[] = [
+  { NM_DIST_OBSV: '갈마치 1구간', current: 2.3 },
+  { NM_DIST_OBSV: '갈마치 2구간', current: 1.8 },
+];
+
+// 적설 데이터
+export const MOCK_SNOW: SnowData[] = [
+  { CD_DIST_OBSV: '0601', NM_DIST_OBSV: '강남관측소', current: 3.2, accumulated: 15.8 },
+  { CD_DIST_OBSV: '0602', NM_DIST_OBSV: '서초관측소', current: 2.8, accumulated: 12.4 },
+];
+
+// 침수 데이터
+export const MOCK_FLOOD: FloodData[] = [
+  { CD_DIST_OBSV: '2101', NM_DIST_OBSV: '강남역 지하도', status: '000', current: 0.0 },
+  { CD_DIST_OBSV: '2102', NM_DIST_OBSV: '서초역 지하도', status: '010', current: 2.5 },
+  { CD_DIST_OBSV: '2103', NM_DIST_OBSV: '잠실역 지하도', status: '000', current: 0.0 },
+];
+
+// 경보현황 데이터
+export const MOCK_ALERT_STATUS: AlertStatus[] = [
+  {
+    GCode: 1,
+    GName: '강남권',
+    IsuKind: 'level2',
+    IsuSrtDate: '2026-03-04 09:30:00',
+    IsuEndDate: null,
+    Occur: '01,02',
+    IStatus: 'ing',
+  },
+  {
+    GCode: 2,
+    GName: '서남권',
+    IsuKind: 'level1',
+    IsuSrtDate: '2026-03-03 14:00:00',
+    IsuEndDate: '2026-03-03 18:30:00',
+    Occur: '01',
+    IStatus: 'end',
+  },
+  {
+    GCode: 3,
+    GName: '도심권',
+    IsuKind: 'level3',
+    IsuSrtDate: '2026-03-02 08:00:00',
+    IsuEndDate: '2026-03-02 12:00:00',
+    Occur: '03',
+    IStatus: 'end',
+  },
+  {
+    GCode: 1,
+    GName: '강남권',
+    IsuKind: 'level1',
+    IsuSrtDate: '2026-03-01 10:00:00',
+    IsuEndDate: '2026-03-01 15:00:00',
+    Occur: 'manual',
+    IStatus: 'end',
+  },
+  {
+    GCode: 2,
+    GName: '서남권',
+    IsuKind: 'level4',
+    IsuSrtDate: '2026-02-28 16:00:00',
+    IsuEndDate: '2026-02-28 20:00:00',
+    Occur: '01,02,03',
+    IStatus: 'end',
   },
 ];
