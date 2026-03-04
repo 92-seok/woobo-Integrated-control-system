@@ -5,6 +5,7 @@ import { MainPage } from '@/pages/MainPage';
 import { BroadPage } from '@/pages/BroadPage';
 import { GatePage } from '@/pages/GatePage';
 import { ParkingPage } from '@/pages/ParkingPage';
+import { ReportPage } from '@/pages/ReportPage';
 import './App.css';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/sms" element={<SmsPage />} />
         <Route path="/gate" element={<GatePage />} />
         <Route path="/parking" element={<ParkingPage />} />
+        <Route path="/report" element={<ReportPage />} />
       </Route>
     </Routes>
   );

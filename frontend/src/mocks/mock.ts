@@ -712,3 +712,114 @@ export const MOCK_SERVICE_PROCESS: ServiceProcess = {
   restarts: 0,
   uptime: 86400000 * 3, // 3일
 };
+
+// -------------- 보고서 (Report) --------------
+import type {
+  WaterLevelData,
+  RainfallData,
+  DisplacementData,
+  SoilMoistureData,
+  TiltData,
+  SnowData,
+  FloodData,
+  AlertStatus,
+} from '@/types/report';
+
+// 활성 관측 종류 (GB_OBSV 코드)
+export const MOCK_ACTIVE_OBSERVATIONS: string[] = ['01', '02', '03', '04', '06', '08', '21'];
+
+// 수위 데이터
+export const MOCK_WATER_LEVEL: WaterLevelData[] = [
+  { CD_DIST_OBSV: '0201', NM_DIST_OBSV: '우보교', current: 1.234 },
+  { CD_DIST_OBSV: '0202', NM_DIST_OBSV: '갈마치교', current: 0.856 },
+  { CD_DIST_OBSV: '0203', NM_DIST_OBSV: '태평교', current: 2.105 },
+];
+
+// 강우 데이터
+export const MOCK_RAINFALL: RainfallData[] = [
+  { CD_DIST_OBSV: '0101', NM_DIST_OBSV: '강남관측소', yyesterday: 12.5, yesterday: 8.0, today: 3.5 },
+  { CD_DIST_OBSV: '0102', NM_DIST_OBSV: '서초관측소', yyesterday: 10.0, yesterday: 6.5, today: null },
+  { CD_DIST_OBSV: '0103', NM_DIST_OBSV: '송파관측소', yyesterday: null, yesterday: 5.0, today: 2.0 },
+  { CD_DIST_OBSV: '0104', NM_DIST_OBSV: '관악관측소', yyesterday: 15.0, yesterday: 9.5, today: 4.0 },
+];
+
+// 변위 데이터
+export const MOCK_DISPLACEMENT: DisplacementData[] = [
+  { CD_DIST_OBSV: '0301', NM_DIST_OBSV: '갈마치 1구간', SUB_OBSV: 'A', current: 0.3, accumulated: 2.8 },
+  { CD_DIST_OBSV: '0301', NM_DIST_OBSV: '갈마치 1구간', SUB_OBSV: 'B', current: 0.1, accumulated: 1.5 },
+  { CD_DIST_OBSV: '0302', NM_DIST_OBSV: '갈마치 2구간', SUB_OBSV: 'A', current: 0.5, accumulated: 4.2 },
+];
+
+// 함수비 데이터
+export const MOCK_SOIL_MOISTURE: SoilMoistureData[] = [
+  { NM_DIST_OBSV: '갈마치 1지구', current: 23.5 },
+  { NM_DIST_OBSV: '갈마치 2지구', current: 31.2 },
+];
+
+// 경사 데이터
+export const MOCK_TILT: TiltData[] = [
+  { NM_DIST_OBSV: '갈마치 1구간', current: 2.3 },
+  { NM_DIST_OBSV: '갈마치 2구간', current: 1.8 },
+];
+
+// 적설 데이터
+export const MOCK_SNOW: SnowData[] = [
+  { CD_DIST_OBSV: '0601', NM_DIST_OBSV: '강남관측소', current: 3.2, accumulated: 15.8 },
+  { CD_DIST_OBSV: '0602', NM_DIST_OBSV: '서초관측소', current: 2.8, accumulated: 12.4 },
+];
+
+// 침수 데이터
+export const MOCK_FLOOD: FloodData[] = [
+  { CD_DIST_OBSV: '2101', NM_DIST_OBSV: '강남역 지하도', status: '000', current: 0.0 },
+  { CD_DIST_OBSV: '2102', NM_DIST_OBSV: '서초역 지하도', status: '010', current: 2.5 },
+  { CD_DIST_OBSV: '2103', NM_DIST_OBSV: '잠실역 지하도', status: '000', current: 0.0 },
+];
+
+// 경보현황 데이터
+export const MOCK_ALERT_STATUS: AlertStatus[] = [
+  {
+    GCode: 1,
+    GName: '강남권',
+    IsuKind: 'level2',
+    IsuSrtDate: '2026-03-04 09:30:00',
+    IsuEndDate: null,
+    Occur: '01,02',
+    IStatus: 'ing',
+  },
+  {
+    GCode: 2,
+    GName: '서남권',
+    IsuKind: 'level1',
+    IsuSrtDate: '2026-03-03 14:00:00',
+    IsuEndDate: '2026-03-03 18:30:00',
+    Occur: '01',
+    IStatus: 'end',
+  },
+  {
+    GCode: 3,
+    GName: '도심권',
+    IsuKind: 'level3',
+    IsuSrtDate: '2026-03-02 08:00:00',
+    IsuEndDate: '2026-03-02 12:00:00',
+    Occur: '03',
+    IStatus: 'end',
+  },
+  {
+    GCode: 1,
+    GName: '강남권',
+    IsuKind: 'level1',
+    IsuSrtDate: '2026-03-01 10:00:00',
+    IsuEndDate: '2026-03-01 15:00:00',
+    Occur: 'manual',
+    IStatus: 'end',
+  },
+  {
+    GCode: 2,
+    GName: '서남권',
+    IsuKind: 'level4',
+    IsuSrtDate: '2026-02-28 16:00:00',
+    IsuEndDate: '2026-02-28 20:00:00',
+    Occur: '01,02,03',
+    IStatus: 'end',
+  },
+];
