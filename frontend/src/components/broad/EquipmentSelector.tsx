@@ -80,7 +80,11 @@ export function EquipmentSelector({ equipments, groups, selectedIds, onSelectedC
 
   const toggleOne = (id: string) => {
     const next = new Set(selectedIds);
-    next.has(id) ? next.delete(id) : next.add(id);
+    if (next.has(id)) {
+      next.delete(id);
+    } else {
+      next.add(id);
+    }
     onSelectedChange(next);
   };
 
@@ -146,7 +150,7 @@ export function EquipmentSelector({ equipments, groups, selectedIds, onSelectedC
           >
             <ChevronLeft className="h-3.5 w-3.5" />
           </Button>
-          <span className="text-foreground min-w-[3rem] text-center text-xs font-semibold">
+          <span className="text-foreground min-w-12 text-center text-xs font-semibold">
             {safePage} / {totalPages}
           </span>
           <Button

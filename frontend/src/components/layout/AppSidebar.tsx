@@ -39,7 +39,7 @@ export function AppSidebar({ collapsed = false, onToggle }: AppSidebarProps) {
     <aside
       className={cn(
         'border-sidebar-border bg-sidebar text-sidebar-foreground relative flex h-screen flex-col border-r transition-all duration-300 ease-in-out',
-        collapsed ? 'w-[72px]' : 'w-[240px]'
+        collapsed ? 'w-18' : 'w-60'
       )}
     >
       {/* 로고 영역 */}
@@ -74,13 +74,13 @@ export function AppSidebar({ collapsed = false, onToggle }: AppSidebarProps) {
               cn(
                 'group text-md relative flex items-center gap-5 rounded-lg px-5 py-7 font-bold transition-all duration-150',
                 isActive
-                  ? 'bg-white/15 text-white before:absolute before:top-1/2 before:left-0 before:h-5 before:w-[3px] before:-translate-y-1/2 before:rounded-r-full before:bg-white'
+                  ? 'bg-white/15 text-white before:absolute before:top-1/2 before:left-0 before:h-5 before:w-1 before:-translate-y-1/2 before:rounded-r-full before:bg-white'
                   : 'text-white/60 hover:bg-white/10 hover:text-white/90'
               )
             }
             title={collapsed ? item.label : undefined}
           >
-            <item.icon className="h-[18px] w-[18px] shrink-0" />
+            <item.icon className="h-4.5 w-4.5 shrink-0" />
             {!collapsed && <span className="truncate">{item.label}</span>}
           </NavLink>
         ))}
@@ -95,7 +95,7 @@ export function AppSidebar({ collapsed = false, onToggle }: AppSidebarProps) {
           className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-white/60 transition-all hover:bg-white/10 hover:text-white/90"
         >
           <ChevronLeft
-            className={cn('h-[18px] w-[18px] shrink-0 transition-transform duration-300', collapsed && 'rotate-180')}
+            className={cn('h-4.5 w-4.5 shrink-0 transition-transform duration-300', collapsed && 'rotate-180')}
           />
           {!collapsed && <span>사이드바 접기</span>}
         </button>
@@ -103,7 +103,7 @@ export function AppSidebar({ collapsed = false, onToggle }: AppSidebarProps) {
           type="button"
           className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-white/60 transition-all hover:bg-red-500/15 hover:text-red-300"
         >
-          <LogOut className="h-[18px] w-[18px] shrink-0" />
+          <LogOut className="h-4.5 w-4.5 shrink-0" />
           {!collapsed && <span>로그아웃</span>}
         </button>
       </div>

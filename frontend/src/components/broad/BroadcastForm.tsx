@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { Send, Loader2, FileText, Clock, Repeat, Volume2, AlertTriangle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MOCK_TTS_MENTS, MOCK_ALERT_MENTS } from '../../mocks/mock';
-import type { Equipment, MessageMent, SendBroadcastPayload } from '../../types/broad';
+import type { Equipment, SendBroadcastPayload } from '../../types/broad';
 
 const MAX_CONTENT = 500;
 
@@ -295,7 +295,7 @@ export function BroadcastForm({ selectedEquipments }: BroadcastFormProps) {
                 if (e.target.value.length <= MAX_CONTENT) setContent(e.target.value);
               }}
               placeholder="방송할 내용을 입력하세요..."
-              className="border-border bg-muted/20 text-foreground placeholder:text-muted-foreground/40 focus:border-primary/40 focus:ring-primary/10 min-h-[200px] flex-1 resize-none rounded-lg border p-4 text-sm leading-relaxed transition-all outline-none focus:bg-white focus:ring-2"
+              className="border-border bg-muted/20 text-foreground placeholder:text-muted-foreground/40 focus:border-primary/40 focus:ring-primary/10 min-h-50 flex-1 resize-none rounded-lg border p-4 text-sm leading-relaxed transition-all outline-none focus:bg-white focus:ring-2"
             />
             {/* 프로그레스 바 */}
             <div className="bg-muted mt-2 h-1 w-full overflow-hidden rounded-full">

@@ -32,7 +32,7 @@ export function PeriodTable({ sensorType, equipments, waterUnit }: PeriodTablePr
 
   // 검색 실행 시점의 조건 저장
   const [searchParams, setSearchParams] = useState({ startDate, endDate, selectedArea });
-  const [tableOpen, setTableOpen] = useState(false);
+  const [tableOpen, setTableOpen] = useState(true);
 
   // 변위 채널 선택
   const selectedEquip = equipments.find((e) => e.CD_DIST_OBSV === selectedArea);
@@ -46,6 +46,7 @@ export function PeriodTable({ sensorType, equipments, waterUnit }: PeriodTablePr
     return Math.max(1, Math.min(diff, 60)); // 최대 60일 제한
   }, [searchParams]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- API 연동 시 searchParams 필요
   const data = useMemo(() => generatePeriodData(sensorType, dayCount), [sensorType, dayCount, searchParams]);
 
   const themeColor = getSensorColor(sensorType);
@@ -144,7 +145,7 @@ export function PeriodTable({ sensorType, equipments, waterUnit }: PeriodTablePr
         {showChart ? (
           <DataChart sensorType={sensorType} labels={hours} datasets={chartDatasets} waterUnit={waterUnit} />
         ) : (
-          <div className="flex h-[100px] items-center justify-center">
+          <div className="flex h-25 items-center justify-center">
             <span className="text-muted-foreground text-sm">
               {MAX_CHART_DAYS}일 이내의 기간만 차트로 표시됩니다. (현재 {dayCount}일)
             </span>
@@ -166,7 +167,7 @@ export function PeriodTable({ sensorType, equipments, waterUnit }: PeriodTablePr
 
       {/* 데이터 테이블 */}
       {tableOpen && (
-        <div className="max-h-[600px] overflow-auto">
+        <div className="max-h-150 overflow-auto">
           <Table className="table-fixed text-center">
             <colgroup>
               <col className="w-28" />
@@ -228,12 +229,12 @@ export function PeriodTable({ sensorType, equipments, waterUnit }: PeriodTablePr
                 const [y, m, d] = row.regDate.split('-');
                 return (
                   <TableRow key={row.regDate} className="hover:bg-slate-50">
-                    <TableCell className="bg-slate-50 text-xs font-bold whitespace-nowrap">
+                    <TableCell className="bg-slate-50 p-0 px-2 py-1 text-xs font-bold whitespace-nowrap">
                       {y}년 {m}월 {d}일
                     </TableCell>
 
                     {row.values.map((val, colIdx) => (
-                      <TableCell key={colIdx} className="text-xs">
+                      <TableCell key={colIdx} className="p-0 px-2 py-1 text-xs">
                         {val !== null ? (
                           <span style={{ color: '#4900FF' }}>{formatValue(val, sensorType, waterUnit)}</span>
                         ) : (
@@ -243,17 +244,17 @@ export function PeriodTable({ sensorType, equipments, waterUnit }: PeriodTablePr
                     ))}
 
                     {showMax && (
-                      <TableCell className="bg-orange-50 text-xs font-bold">
+                      <TableCell className="bg-orange-50 p-0 px-2 py-1 text-xs font-bold">
                         {formatValue(row.dayMax ?? null, sensorType, waterUnit)}
                       </TableCell>
                     )}
                     {showMin && (
-                      <TableCell className="bg-blue-50 text-xs font-bold">
+                      <TableCell className="bg-blue-50 p-0 px-2 py-1 text-xs font-bold">
                         {formatValue(row.dayMin ?? null, sensorType, waterUnit)}
                       </TableCell>
                     )}
                     {showSum && (
-                      <TableCell className="text-xs font-bold text-red-700">
+                      <TableCell className="p-0 px-2 py-1 text-xs font-bold text-red-700">
                         {formatValue(row.daySum ?? null, sensorType, waterUnit)}
                       </TableCell>
                     )}

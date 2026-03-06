@@ -14,11 +14,8 @@ interface GateHistoryProps {
 
 export function GateHistory({ history }: GateHistoryProps) {
   // 기본값: 7일 전 ~ 오늘
-  const today = new Date().toISOString().slice(0, 10);
-  const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
-
-  const [startDate, setStartDate] = useState(weekAgo);
-  const [endDate, setEndDate] = useState(today);
+  const [startDate, setStartDate] = useState(() => new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10));
+  const [endDate, setEndDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [page, setPage] = useState(1);
 
   // 날짜 필터링
@@ -96,7 +93,9 @@ export function GateHistory({ history }: GateHistoryProps) {
                 return (
                   <TableRow key={item.GCtrCode}>
                     <TableCell className="px-3 py-3 text-center text-sm">{(page - 1) * PER_PAGE + idx + 1}</TableCell>
-                    <TableCell className="px-3 py-3 text-center font-medium">{item.NM_DIST_OBSV ?? item.CD_DIST_OBSV}</TableCell>
+                    <TableCell className="px-3 py-3 text-center font-medium">
+                      {item.NM_DIST_OBSV ?? item.CD_DIST_OBSV}
+                    </TableCell>
                     <TableCell className="px-3 py-3 text-center">
                       <span className={cn('text-sm font-semibold', gateInfo.color)}>{gateInfo.label}</span>
                     </TableCell>

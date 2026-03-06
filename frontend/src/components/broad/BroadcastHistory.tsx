@@ -42,7 +42,11 @@ export function BroadcastHistory() {
 
   const toggleOne = (id: string) => {
     const next = new Set(selectedIds);
-    next.has(id) ? next.delete(id) : next.add(id);
+    if (next.has(id)) {
+      next.delete(id);
+    } else {
+      next.add(id);
+    }
     setSelectedIds(next);
   };
 
@@ -76,9 +80,7 @@ export function BroadcastHistory() {
     setRetryingId(null);
   };
 
-  // -------------
   // 상세보기 모드
-  // -------------
 
   if (detailBCode !== null && detailInfo) {
     return (
@@ -225,7 +227,7 @@ export function BroadcastHistory() {
             >
               <ChevronLeft className="h-3.5 w-3.5" />
             </Button>
-            <span className="text-foreground min-w-[3rem] text-center text-xs font-semibold">
+            <span className="text-foreground min-w-12 text-center text-xs font-semibold">
               {safePage} / {totalPages}
             </span>
             <Button
@@ -238,12 +240,7 @@ export function BroadcastHistory() {
             </Button>
           </div>
           {/* 삭제 버튼 */}
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={handleDelete}
-            disabled={selectedIds.size === 0}
-          >
+          <Button variant="destructive" size="sm" onClick={handleDelete} disabled={selectedIds.size === 0}>
             <Trash2 className="h-3.5 w-3.5" />
             {selectedIds.size > 0 ? `${selectedIds.size}건 삭제` : '삭제'}
           </Button>

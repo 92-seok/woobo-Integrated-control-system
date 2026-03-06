@@ -47,10 +47,10 @@ export function AsTab() {
   };
 
   const selectClass =
-    'w-full rounded border border-gray-200 bg-white px-3 py-2 text-[12px] text-slate-700 outline-none transition-colors focus:border-violet-400';
+    'w-full rounded border border-gray-200 bg-white px-3 py-2 text-xs text-slate-700 outline-none transition-colors focus:border-violet-400';
 
   return (
-    <div className="flex flex-col gap-3 text-[12px]">
+    <div className="flex flex-col gap-3 text-xs">
       {/* ── 접수내용 ── */}
       <div>
         <div className="flex w-full items-center justify-between border-b-2 border-violet-500">
@@ -104,7 +104,12 @@ export function AsTab() {
                   </option>
                 ))}
               </select>
-              <select className={selectClass} value={equip} onChange={(e) => setEquip(e.target.value)} disabled={!middle}>
+              <select
+                className={selectClass}
+                value={equip}
+                onChange={(e) => setEquip(e.target.value)}
+                disabled={!middle}
+              >
                 <option value="">소분류 선택</option>
               </select>
 
@@ -120,7 +125,7 @@ export function AsTab() {
               <button
                 type="button"
                 onClick={handleAdd}
-                className="mx-auto mt-1 rounded bg-violet-600 px-6 py-1.5 text-[12px] font-medium text-white transition-colors hover:bg-violet-700"
+                className="mx-auto mt-1 rounded bg-violet-600 px-6 py-1.5 text-xs font-medium text-white transition-colors hover:bg-violet-700"
               >
                 추가하기
               </button>
@@ -216,28 +221,28 @@ export function AsTab() {
                   onChange={(e) => setPhoneChk(e.target.checked)}
                   className="accent-violet-600"
                 />
-                <span className="w-14 text-[12px] text-slate-600">핸드폰</span>
+                <span className="w-14 text-xs text-slate-600">핸드폰</span>
                 <input
                   type="text"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="flex-1 rounded border px-2 py-1.5 text-[12px] transition-colors outline-none focus:border-violet-400"
+                  className="flex-1 rounded border px-2 py-1.5 text-xs transition-colors outline-none focus:border-violet-400"
                 />
               </label>
               <label className="flex items-center gap-3 px-2">
-                <span className="w-[62px] text-[12px] text-slate-600">발신인</span>
+                <span className="w-15.5 text-xs text-slate-600">발신인</span>
                 <input
                   type="text"
                   value={sender}
                   onChange={(e) => setSender(e.target.value)}
                   maxLength={10}
-                  className="flex-1 rounded border px-2 py-1.5 text-[12px] transition-colors outline-none focus:border-violet-400"
+                  className="flex-1 rounded border px-2 py-1.5 text-xs transition-colors outline-none focus:border-violet-400"
                 />
               </label>
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="mx-auto mt-1 rounded bg-violet-600 px-6 py-1.5 text-[12px] font-medium text-white transition-colors hover:bg-violet-700"
+                className="mx-auto mt-1 rounded bg-violet-600 px-6 py-1.5 text-xs font-medium text-white transition-colors hover:bg-violet-700"
               >
                 접수하기
               </button>

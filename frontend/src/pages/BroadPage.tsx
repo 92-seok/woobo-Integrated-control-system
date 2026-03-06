@@ -62,7 +62,10 @@ export function BroadPage() {
               <button
                 key={tab.value}
                 type="button"
-                onClick={() => { setActiveTab(tab.value); setHelpOpen(false); }}
+                onClick={() => {
+                  setActiveTab(tab.value);
+                  setHelpOpen(false);
+                }}
                 className={cn(
                   'relative flex items-center gap-2 px-4 py-3.5 text-sm font-medium transition-colors duration-150',
                   isActive ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
@@ -70,7 +73,7 @@ export function BroadPage() {
               >
                 <Icon className="h-4 w-4" />
                 {tab.label}
-                {isActive && <span className="bg-primary absolute right-0 bottom-0 left-0 h-[2px] rounded-t-full" />}
+                {isActive && <span className="bg-primary absolute right-0 bottom-0 left-0 h-0.5 rounded-t-full" />}
               </button>
             );
           })}

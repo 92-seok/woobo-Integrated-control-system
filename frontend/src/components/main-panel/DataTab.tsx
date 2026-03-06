@@ -54,7 +54,7 @@ export function DataTab() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-3 text-[12px]">
+    <div className="flex flex-col gap-3 text-xs">
       {SECTIONS.map((section) => (
         <div key={section.key}>
           {/* 섹션 헤더 */}

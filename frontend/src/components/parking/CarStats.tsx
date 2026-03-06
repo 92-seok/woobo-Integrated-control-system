@@ -133,7 +133,7 @@ export function CarStats({ dayStats, monthStats, yearStats }: CarStatsProps) {
 
       {/* 통계 테이블 */}
       <div className="border-border overflow-x-auto rounded-lg border bg-white shadow-sm">
-        <table className={cn('w-full table-fixed text-xs', view === 'month' && 'min-w-[1100px]')}>
+        <table className={cn('w-full table-fixed text-xs', view === 'month' && 'min-w-275')}>
           <thead>
             <tr className="bg-muted/30">
               <th className="border-border w-24 border-r px-2 py-2 text-center font-semibold">주차장</th>

@@ -19,12 +19,12 @@ function getToday(): string {
 
 // 이미지 뷰어 (공통 컴포넌트)
 function ImageViewer({ images, loading, error }: { images: string[]; loading: boolean; error: string }) {
-  const [idx, setIdx] = useState(0);
+  const [idx, setIdx] = useState(() => (images.length > 0 ? images.length - 1 : 0));
 
   // 이미지 목록 변경 시 최신으로 이동
-  useEffect(() => {
-    if (images.length > 0) setIdx(images.length - 1);
-  }, [images]);
+  // useEffect(() => {
+  //   if (images.length > 0) setIdx(images.length - 1);
+  // }, [images]);
 
   return (
     <>
@@ -41,8 +41,8 @@ function ImageViewer({ images, loading, error }: { images: string[]; loading: bo
           <img src={images[idx]} alt="영상" className="h-full w-full object-contain" />
         ) : (
           <div className="flex h-full flex-col items-center justify-center">
-            <span className="block text-[12px] text-gray-400">영상 데이터 없음</span>
-            <span className="block text-[10px] text-gray-400">(기상청 데이터가 없습니다)</span>
+            <span className="block text-xs text-gray-400">영상 데이터 없음</span>
+            <span className="block text-xs text-gray-400">(기상청 데이터가 없습니다)</span>
           </div>
         )}
       </div>
@@ -166,8 +166,8 @@ export function RadarTab() {
     <div className="flex h-full flex-col gap-2">
       {/* ── 레이더 영상 (위) ── */}
       <div className="flex min-h-0 flex-1 flex-col gap-1">
-        <h3 className="text-[16px] font-bold text-slate-600">레이더영상</h3>
-        <ImageViewer images={radarImages} loading={radarLoading} error={radarError} />
+        <h3 className="text-base font-bold text-slate-600">레이더영상</h3>
+        <ImageViewer key={radarImages.length} images={radarImages} loading={radarLoading} error={radarError} />
       </div>
 
       {/* 구분선 */}
@@ -176,7 +176,7 @@ export function RadarTab() {
       {/* ── 위성 영상 (아래) ── */}
       <div className="flex min-h-0 flex-1 flex-col gap-1">
         <div className="flex items-center justify-center">
-          <h3 className="text-[16px] font-bold text-slate-600">위성영상</h3>
+          <h3 className="text-base font-bold text-slate-600">위성영상</h3>
         </div>
         {/* 위성 종류 선택 */}
         <div className="flex gap-1">
@@ -196,7 +196,7 @@ export function RadarTab() {
             </button>
           ))}
         </div>
-        <ImageViewer images={satImages} loading={satLoading} error={satError} />
+        <ImageViewer key={radarImages.length} images={satImages} loading={satLoading} error={satError} />
       </div>
     </div>
   );

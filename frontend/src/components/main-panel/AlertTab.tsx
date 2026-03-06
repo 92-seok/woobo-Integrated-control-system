@@ -53,7 +53,7 @@ export function AlertTab() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-3 text-[12px]">
+    <div className="flex flex-col gap-3 text-xs">
       {/* 자동 점검 체크박스 */}
       <label className="flex items-center justify-start gap-2 rounded bg-gray-50 px-3 py-2">
         <input
@@ -120,7 +120,7 @@ export function AlertTab() {
           )}
         >
           <div className="overflow-hidden">
-            <pre className="px-2 py-2 text-left text-[12px] leading-relaxed whitespace-pre-wrap text-slate-600">
+            <pre className="px-2 py-2 text-left text-xs leading-relaxed whitespace-pre-wrap text-slate-600">
               {SAMPLE_RESULTS}
             </pre>
           </div>

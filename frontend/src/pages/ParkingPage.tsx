@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Warehouse, Car, BarChart3, Server } from 'lucide-react';
+import { Warehouse, Car, BarChart3 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   MOCK_PARKING_GROUPS,
@@ -70,7 +70,7 @@ export function ParkingPage() {
               >
                 <Icon className="h-4 w-4" />
                 {tab.label}
-                {isActive && <span className="bg-primary absolute right-0 bottom-0 left-0 h-[2px] rounded-t-full" />}
+                {isActive && <span className="bg-primary absolute right-0 bottom-0 left-0 h-0.5 rounded-t-full" />}
               </button>
             );
           })}

@@ -74,7 +74,7 @@ export function GatePage() {
               >
                 <Icon className="h-4 w-4" />
                 {tab.label}
-                {isActive && <span className="bg-primary absolute right-0 bottom-0 left-0 h-[2px] rounded-t-full" />}
+                {isActive && <span className="bg-primary absolute right-0 bottom-0 left-0 h-0.5 rounded-t-full" />}
               </button>
             );
           })}

@@ -18,11 +18,12 @@ export function TimeTable({ sensorType, equipments, waterUnit }: TimeTableProps)
   const [selectedArea, setSelectedArea] = useState(equipments[0]?.CD_DIST_OBSV ?? '');
   const [date, setDate] = useState(getToday());
   const [searchDate, setSearchDate] = useState(date);
-  const [tableOpen, setTableOpen] = useState(false);
+  const [tableOpen, setTableOpen] = useState(true);
 
   const selectedEquip = equipments.find((e) => e.CD_DIST_OBSV === selectedArea);
   const [channel, setChannel] = useState(1);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- API 연동 시 searchDate, selectedArea, channel 필요
   const data = useMemo(() => generateTimeData(sensorType), [sensorType, searchDate, selectedArea, channel]);
 
   const themeColor = getSensorColor(sensorType);
@@ -120,7 +121,7 @@ export function TimeTable({ sensorType, equipments, waterUnit }: TimeTableProps)
 
       {/* 데이터 테이블 */}
       {tableOpen && (
-        <div className="max-h-[600px] overflow-auto">
+        <div className="max-h-150 overflow-auto">
           <Table className="table-fixed text-center">
             <colgroup>
               <col className="w-16" />
@@ -152,9 +153,9 @@ export function TimeTable({ sensorType, equipments, waterUnit }: TimeTableProps)
             <TableBody>
               {data.map((row) => (
                 <TableRow key={row.minute} className="hover:bg-slate-50">
-                  <TableCell className="bg-slate-50 text-xs font-bold">{row.minute}분</TableCell>
+                  <TableCell className="bg-slate-50 p-0 px-2 py-1 text-xs font-bold">{row.minute}분</TableCell>
                   {row.values.map((val, colIdx) => (
-                    <TableCell key={colIdx} className="text-xs">
+                    <TableCell key={colIdx} className="p-0 px-2 py-1 text-xs">
                       {val !== null ? (
                         <span style={{ color: '#4900FF' }}>{formatValue(val, sensorType, waterUnit)}</span>
                       ) : (

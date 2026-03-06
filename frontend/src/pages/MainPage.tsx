@@ -184,15 +184,16 @@ const SAMPLE_MARKERS: MarkerData[] = [
 
 export function MainPage() {
   const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<any>(null);
+  const mapInstanceRef = useRef<kakao.maps.Map | null>(null);
+
   const [panelOpen, setPanelOpen] = useState(true);
   const [mapType, setMapType] = useState<'roadmap' | 'hybrid'>('hybrid');
   const navigate = useNavigate();
 
   useEffect(() => {
-    (window as any).__navigateTo = (path: string) => navigate(path);
+    window.__navigateTo = (path: string) => navigate(path);
     return () => {
-      delete (window as any).__navigateTo;
+      delete window.__navigateTo;
     };
   }, [navigate]);
 
@@ -200,7 +201,7 @@ export function MainPage() {
   const toggleMapType = () => {
     const map = mapInstanceRef.current;
     if (!map) return;
-    const kakao = (window as any).kakao;
+    const { kakao } = window;
     if (mapType === 'hybrid') {
       map.setMapTypeId(kakao.maps.MapTypeId.ROADMAP);
       setMapType('roadmap');
@@ -224,8 +225,7 @@ export function MainPage() {
     const KAKAO_KEY = import.meta.env.VITE_KAKAO_MAP_KEY;
 
     const initMap = () => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const kakao = (window as any).kakao;
+      const { kakao } = window;
 
       kakao.maps.load(() => {
         if (!mapRef.current) return;
@@ -240,10 +240,10 @@ export function MainPage() {
         mapInstanceRef.current = map;
 
         // 현재 열린 인포윈도우 추적(한개만 열리기)
-        let openInfoWindow: any = null;
+        let openInfoWindow: kakao.maps.CustomOverlay | null = null;
 
         // 글로벌 닫기 함수
-        (window as any).__closeInfoWindow = () => {
+        window.__closeInfoWindow = () => {
           if (openInfoWindow) {
             openInfoWindow.setMap(null);
             openInfoWindow = null;
@@ -296,7 +296,7 @@ export function MainPage() {
     };
 
     // 이미 kakao SDK가 로드된 상태 (StrictMode 2번째 실행 시)
-    if ((window as any).kakao) {
+    if (window.kakao) {
       initMap();
       return;
     }
@@ -348,7 +348,7 @@ export function MainPage() {
             <button
               type="button"
               onClick={toggleMapType}
-              className="rounded-lg bg-white px-3 py-2 text-[12px] font-medium text-foreground shadow-md transition-colors hover:bg-gray-50"
+              className="text-foreground rounded-lg bg-white px-3 py-2 text-xs font-medium shadow-md transition-colors hover:bg-gray-50"
             >
               {mapType === 'hybrid' ? '일반지도' : '하이브리드'}
             </button>
@@ -359,14 +359,14 @@ export function MainPage() {
             <button
               type="button"
               onClick={zoomIn}
-              className="rounded-t-lg bg-white px-3 py-2 text-[16px] font-bold text-muted-foreground shadow-md transition-colors hover:bg-gray-50"
+              className="text-muted-foreground rounded-t-lg bg-white px-3 py-2 text-base font-bold shadow-md transition-colors hover:bg-gray-50"
             >
               +
             </button>
             <button
               type="button"
               onClick={zoomOut}
-              className="rounded-b-lg border-t bg-white px-3 py-2 text-[16px] font-bold text-muted-foreground shadow-md transition-colors hover:bg-gray-50"
+              className="text-muted-foreground rounded-b-lg border-t bg-white px-3 py-2 text-base font-bold shadow-md transition-colors hover:bg-gray-50"
             >
               −
             </button>

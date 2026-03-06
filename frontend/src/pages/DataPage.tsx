@@ -106,7 +106,7 @@ export function DataPage() {
       </div>
 
       {/*  탭 네비게이션  */}
-      <div className="border-border border-b bg-white px-6">
+      <div className="border-border flex items-center justify-between border-b bg-white px-6">
         <nav className="flex">
           {timeViewTabs.map(([value, config]) => {
             const Icon = tabIcons[value];
@@ -123,11 +123,32 @@ export function DataPage() {
               >
                 <Icon className="h-4 w-4" />
                 {config.label}
-                {isActive && <span className="bg-primary absolute right-0 bottom-0 left-0 h-[2px] rounded-t-full" />}
+                {isActive && <span className="bg-primary absolute right-0 bottom-0 left-0 h-0.5 rounded-t-full" />}
               </button>
             );
           })}
         </nav>
+
+        {/* 액션 버튼 */}
+        <div className="flex items-center gap-2">
+          <Button
+            size="sm"
+            className="text-white hover:opacity-90"
+            style={{ backgroundColor: getSensorColor(sensorType) }}
+            onClick={handleExcelDownload}
+          >
+            <Download className="h-3.5 w-3.5" />
+            엑셀다운
+          </Button>
+          <Button
+            size="sm"
+            className="bg-slate-500 text-white hover:bg-slate-600"
+            onClick={() => window.location.reload()}
+          >
+            <RefreshCw className="h-3.5 w-3.5" />
+            새로고침
+          </Button>
+        </div>
       </div>
 
       {/*  콘텐츠 영역  */}
@@ -140,27 +161,6 @@ export function DataPage() {
           {activeTab === 'period' && (
             <PeriodTable sensorType={sensorType} equipments={equipments} waterUnit={waterUnit} />
           )}
-
-          {/* 하단 액션 버튼 */}
-          <div className="mx-auto flex items-center justify-center gap-3">
-            <Button
-              size="sm"
-              className="text-white hover:opacity-90"
-              style={{ backgroundColor: getSensorColor(sensorType) }}
-              onClick={handleExcelDownload}
-            >
-              <Download className="h-3.5 w-3.5" />
-              엑셀다운
-            </Button>
-            <Button
-              size="sm"
-              className="bg-slate-500 text-white hover:bg-slate-600"
-              onClick={() => window.location.reload()}
-            >
-              <RefreshCw className="h-3.5 w-3.5" />
-              새로고침
-            </Button>
-          </div>
         </div>
       </div>
     </div>

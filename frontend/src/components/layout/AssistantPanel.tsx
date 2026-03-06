@@ -41,7 +41,7 @@ export function AssistantPanel({ open, onToggle }: AssistantPanelProps) {
         <div
           className={cn(
             'flex flex-col border-l bg-white transition-all duration-300',
-            open ? 'w-[360px]' : 'w-0 overflow-hidden'
+            open ? 'w-90' : 'w-0 overflow-hidden'
           )}
         >
           {/* 헤더: 제목 + 닫기버튼 */}
@@ -67,7 +67,7 @@ export function AssistantPanel({ open, onToggle }: AssistantPanelProps) {
                 type="button"
                 onClick={() => setActiveTab(tab.id)}
                 className={cn(
-                  'flex-1 py-3 text-[12px] font-medium transition-all',
+                  'flex-1 py-3 text-xs font-medium transition-all',
                   activeTab === tab.id
                     ? 'bg-gray-100 text-slate-800 shadow-[inset_0_2px_4px_rgba(0,0,0,0.12)]'
                     : 'text-gray-400 hover:bg-gray-50'

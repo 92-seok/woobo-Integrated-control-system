@@ -21,11 +21,6 @@ const CHART_COLORS = [
   'rgba(101, 163, 13, 0.75)', // lime
 ];
 
-// 막대 차트용 반투명 배경
-function toBgColor(color: string): string {
-  return color.replace(/[\d.]+\)$/, '0.35)');
-}
-
 export interface DatasetItem {
   label: string;
   data: (number | null)[];
@@ -33,7 +28,7 @@ export interface DatasetItem {
 
 interface DataChartProps {
   sensorType: SensorType;
-  labels: (string | null)[];
+  labels: (string | number | null)[];
   datasets: DatasetItem[];
   waterUnit?: WaterUnit;
 }
@@ -52,7 +47,6 @@ export function DataChart({ sensorType, labels, datasets, waterUnit }: DataChart
     return {
       label: ds.label,
       data: converted,
-      raw: converted,
       backgroundColor: isBar ? color : 'transparent',
       borderColor: color,
       borderWidth: isBar ? 1.5 : 2,
@@ -109,53 +103,12 @@ export function DataChart({ sensorType, labels, datasets, waterUnit }: DataChart
 
   // rain -> 막대, 나머지 -> 꺾은선
   return (
-    <div className="flex flex-col gap-3">
-      {/* 차트 */}
-      <div className="h-[280px] w-full">
-        {isBar ? (
-          <Bar data={chartData} options={options as ChartOptions<'bar'>} />
-        ) : (
-          <Line data={chartData} options={options as ChartOptions<'line'>} />
-        )}
-      </div>
-
-      {/* x축 아래 데이터 값 요약 테이블*/}
-      <div className="overflow-x-auto">
-        <table className="w-full text-center text-[11px]">
-          <thead>
-            <tr className="bg-slate-50 border-b border-slate-200">
-              <th className="sticky left-0 z-10 min-w-[80px] bg-slate-50 px-2 py-1.5 text-left font-semibold text-slate-500">
-                구분
-              </th>
-              {labels.map((label, i) => (
-                <th key={i} className="min-w-[40px] px-1 py-1.5 font-semibold text-slate-500">
-                  {label}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {chartDatasets.map((ds, idx) => {
-              const color = datasets.length === 1 ? themeColor : CHART_COLORS[idx % CHART_COLORS.length];
-              return (
-                <tr key={idx} className="border-b border-slate-100">
-                  <td className="5 sticky left-0 z-10 bg-white px-2 py-1 text-left font-medium whitespace-nowrap">
-                    <span className="5 flex items-center gap-1">
-                      <span className="5 5 inline-block h-2 w-2 rounded-sm" style={{ backgroundColor: color }} />
-                      <span className="max-w-[100px] truncate text-slate-600">{ds.label}</span>
-                    </span>
-                  </td>
-                  {ds.raw.map((val, i) => (
-                    <td key={i} className="5 px-1 py-1 text-slate-700">
-                      {val !== null ? val : '-'}
-                    </td>
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+    <div className="h-105 w-full">
+      {isBar ? (
+        <Bar data={chartData} options={options as ChartOptions<'bar'>} />
+      ) : (
+        <Line data={chartData} options={options as ChartOptions<'line'>} />
+      )}
     </div>
   );
 }

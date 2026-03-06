@@ -81,7 +81,11 @@ export function GroupManager({ groups, equipments, onGroupsChange }: GroupManage
   // 장비 체크 토글
   const toggleEquip = (id: string) => {
     const next = new Set(mappedEquipIds);
-    next.has(id) ? next.delete(id) : next.add(id);
+    if (next.has(id)) {
+      next.delete(id);
+    } else {
+      next.add(id);
+    }
     setMappedEquipIds(next);
   };
 

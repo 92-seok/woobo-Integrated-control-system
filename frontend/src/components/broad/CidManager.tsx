@@ -52,7 +52,11 @@ export function CidManager({ equipments }: CidManagerProps) {
 
   const toggleOne = (id: string) => {
     const next = new Set(selectedIds);
-    next.has(id) ? next.delete(id) : next.add(id);
+    if (next.has(id)) {
+      next.delete(id);
+    } else {
+      next.add(id);
+    }
     setSelectedIds(next);
   };
 
@@ -106,12 +110,7 @@ export function CidManager({ equipments }: CidManagerProps) {
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={handleDelete}
-            disabled={selectedIds.size === 0}
-          >
+          <Button variant="destructive" size="sm" onClick={handleDelete} disabled={selectedIds.size === 0}>
             <Trash2 className="h-3.5 w-3.5" />
             삭제
           </Button>
@@ -138,7 +137,7 @@ export function CidManager({ equipments }: CidManagerProps) {
           >
             <ChevronLeft className="h-3.5 w-3.5" />
           </Button>
-          <span className="text-foreground min-w-[3rem] text-center text-xs font-semibold">
+          <span className="text-foreground min-w-12 text-center text-xs font-semibold">
             {safePage} / {totalPages}
           </span>
           <Button

@@ -19,6 +19,7 @@ export function YearTable({ sensorType, waterUnit }: YearTableProps) {
   const [searchYear, setSearchYear] = useState(year);
   const [tableOpen, setTableOpen] = useState(false);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- API 연동 시 searchYear 필요
   const data = useMemo(() => generateYearData(sensorType), [sensorType, searchYear]);
 
   const themeColor = getSensorColor(sensorType);
@@ -90,7 +91,7 @@ export function YearTable({ sensorType, waterUnit }: YearTableProps) {
 
       {/*  데이터 테이블  */}
       {tableOpen && (
-        <div className="max-h-[600px] overflow-auto">
+        <div className="max-h-150 overflow-auto">
           <Table className="table-fixed text-center">
             <colgroup>
               <col className="w-28" />
@@ -134,18 +135,18 @@ export function YearTable({ sensorType, waterUnit }: YearTableProps) {
                   {isFirstOfGroup(row, idx) && (
                     <TableCell
                       rowSpan={rowSpanMap.get(row.CD_DIST_OBSV)}
-                      className="border-r border-slate-200 bg-slate-50 text-xs font-bold"
+                      className="border-r border-slate-200 bg-slate-50 p-0 px-2 py-1 text-xs font-bold"
                     >
                       {row.NM_DIST_OBSV}
                     </TableCell>
                   )}
 
                   {sensorType === 'dplace' && (
-                    <TableCell className="bg-slate-50 text-xs font-bold">{row.subChannel}</TableCell>
+                    <TableCell className="bg-slate-50 p-0 px-2 py-1 text-xs font-bold">{row.subChannel}</TableCell>
                   )}
 
                   {row.values.map((val, colIdx) => (
-                    <TableCell key={colIdx} className="text-xs">
+                    <TableCell key={colIdx} className="p-0 px-2 py-1 text-xs">
                       {val !== null ? (
                         <span style={{ color: '#4900FF' }}>{formatValue(val, sensorType, waterUnit)}</span>
                       ) : (

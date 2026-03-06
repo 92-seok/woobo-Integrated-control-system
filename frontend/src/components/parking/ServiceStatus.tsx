@@ -129,7 +129,7 @@ export function ServiceStatus({ process }: ServiceStatusProps) {
               닫기
             </Button>
           </div>
-          <pre className="max-h-[300px] overflow-y-auto bg-slate-800 p-4 font-mono text-xs leading-relaxed text-slate-200">
+          <pre className="max-h-75 overflow-y-auto bg-slate-800 p-4 font-mono text-xs leading-relaxed text-slate-200">
             {`[2026-03-03 10:01:11] hnsLpr connected to LPR device LP01 (192.168.10.1:5000)
               [2026-03-03 10:01:11] hnsLpr connected to LPR device LP02 (192.168.10.2:5000)
               [2026-03-03 10:01:12] hnsLpr connected to LPR device LP03 (192.168.10.3:5000)

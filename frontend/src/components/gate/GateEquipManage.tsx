@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Plus, Pencil, Trash2, X, Save, Server, MapPin, Wifi } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Plus, Pencil, Trash2, Server, MapPin, Wifi } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import type { GateEquipment } from '@/types/gate';
@@ -135,7 +134,9 @@ export function GateEquipManage({ equipments, onEquipmentsChange }: GateEquipMan
                 <TableCell className="text-muted-foreground hidden px-3 py-3 text-center text-sm lg:table-cell">
                   {equip.ConnIP}:{equip.ConnPort}
                 </TableCell>
-                <TableCell className="text-muted-foreground hidden px-3 py-3 text-center text-sm md:table-cell">{equip.DTL_ADRES}</TableCell>
+                <TableCell className="text-muted-foreground hidden px-3 py-3 text-center text-sm md:table-cell">
+                  {equip.DTL_ADRES}
+                </TableCell>
                 <TableCell className="px-3 py-3 text-center">
                   <div className="flex items-center justify-center gap-1">
                     <Button variant="ghost" size="sm" onClick={() => handleEditStart(equip)} className="h-7 w-7 p-0">

@@ -20,8 +20,9 @@ export function MonthTable({ sensorType, waterUnit }: MonthTableProps) {
 
   const [yearMonth, setYearMonth] = useState(defaultYM);
   const [searchYM, setSearchYM] = useState(yearMonth);
-  const [tableOpen, setTableOpen] = useState(false);
+  const [tableOpen, setTableOpen] = useState(true);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- API 연동 시 searchYM 필요
   const data = useMemo(() => generateMonthData(sensorType), [sensorType, searchYM]);
 
   const themeColor = getSensorColor(sensorType);
@@ -99,7 +100,7 @@ export function MonthTable({ sensorType, waterUnit }: MonthTableProps) {
 
       {/*  데이터 테이블  */}
       {tableOpen && (
-        <div className="max-h-[600px] overflow-auto">
+        <div className="max-h-150 overflow-auto">
           <Table className="table-fixed text-center">
             <colgroup>
               <col className="w-28" />
@@ -170,18 +171,18 @@ export function MonthTable({ sensorType, waterUnit }: MonthTableProps) {
                   {isFirstOfGroup(row, idx) && (
                     <TableCell
                       rowSpan={rowSpanMap.get(row.CD_DIST_OBSV)}
-                      className="border-r border-slate-200 bg-slate-50 text-xs font-bold"
+                      className="border-r border-slate-200 bg-slate-50 p-0 px-2 py-1 text-xs font-bold"
                     >
                       {row.NM_DIST_OBSV}
                     </TableCell>
                   )}
 
                   {sensorType === 'dplace' && (
-                    <TableCell className="bg-slate-50 text-xs font-bold">{row.subChannel}</TableCell>
+                    <TableCell className="bg-slate-50 p-0 px-2 py-1 text-xs font-bold">{row.subChannel}</TableCell>
                   )}
 
                   {row.values.map((val, colIdx) => (
-                    <TableCell key={colIdx} className="text-xs">
+                    <TableCell key={colIdx} className="p-0 px-2 py-1 text-xs">
                       {val !== null ? (
                         <span style={{ color: '#4900FF' }}>{formatValue(val, sensorType, waterUnit)}</span>
                       ) : (
@@ -191,17 +192,17 @@ export function MonthTable({ sensorType, waterUnit }: MonthTableProps) {
                   ))}
 
                   {showMax && (
-                    <TableCell className="bg-orange-50 text-xs font-bold">
+                    <TableCell className="bg-orange-50 p-0 px-2 py-1 text-xs font-bold">
                       {formatValue(row.dayMax ?? null, sensorType, waterUnit)}
                     </TableCell>
                   )}
                   {showMin && (
-                    <TableCell className="bg-blue-50 text-xs font-bold">
+                    <TableCell className="bg-blue-50 p-0 px-2 py-1 text-xs font-bold">
                       {formatValue(row.dayMin ?? null, sensorType, waterUnit)}
                     </TableCell>
                   )}
                   {showSum && (
-                    <TableCell className="text-xs font-bold text-red-700">
+                    <TableCell className="p-0 px-2 py-1 text-xs font-bold text-red-700">
                       {formatValue(row.daySum ?? null, sensorType, waterUnit)}
                     </TableCell>
                   )}
