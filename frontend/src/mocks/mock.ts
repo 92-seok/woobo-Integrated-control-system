@@ -1,6 +1,7 @@
 import type { Equipment, BroadGroup, MessageMent, BroadcastItem, BroadcastDetailItem, CidItem } from '../types/broad';
 import type { GateEquipment, GateStatus, GateControlHistory } from '../types/gate';
 import type { ParkingGroup, ParkingGate, CarRecord, CarStatsRow, ServiceProcess } from '@/types/parking';
+import type { DisplayEquipment, DisplayMent, DisplayScenario } from '@/types/display';
 
 // -------------- 장비 샘플 (예경보) --------------
 export const MOCK_EQUIPMENTS: Equipment[] = [
@@ -821,5 +822,165 @@ export const MOCK_ALERT_STATUS: AlertStatus[] = [
     IsuEndDate: '2026-02-28 20:00:00',
     Occur: '01,02,03',
     IStatus: 'end',
+  },
+];
+
+// -------------- 전광판 장비 샘플 (display) --------------
+export const MOCK_DISPLAY_EQUIPS: DisplayEquipment[] = [
+  {
+    CD_DIST_OBSV: '1001',
+    GB_OBSV: '18',
+    NM_DIST_OBSV: '강변로 전광판',
+    DTL_ADRES: '서울시 강남구 강변로 123',
+    ConnModel: 'EWDPL_LAN',
+    ConnIP: '192.168.1.101',
+    ConnPort: '5000',
+    SizeX: 320,
+    SizeY: 64,
+    LastStatus: 'ok',
+    USE_YN: '1',
+  },
+  {
+    CD_DIST_OBSV: '1002',
+    GB_OBSV: '18',
+    NM_DIST_OBSV: '하천교 전광판',
+    DTL_ADRES: '서울시 서초구 하천교 45',
+    ConnModel: 'EWDISPLAY_LAN',
+    ConnIP: '192.168.1.102',
+    ConnPort: '5000',
+    SizeX: 160,
+    SizeY: 32,
+    LastStatus: 'ok',
+    USE_YN: '1',
+  },
+  {
+    CD_DIST_OBSV: '1003',
+    GB_OBSV: '18',
+    NM_DIST_OBSV: '수위관측소 전광판',
+    DTL_ADRES: '서울시 송파구 수위로 67',
+    ConnModel: 'EWDPL_LAN',
+    ConnIP: '192.168.1.103',
+    ConnPort: '5000',
+    SizeX: 320,
+    SizeY: 128,
+    LastStatus: 'error',
+    USE_YN: '1',
+  },
+  {
+    CD_DIST_OBSV: '1004',
+    GB_OBSV: '18',
+    NM_DIST_OBSV: '중앙교 전광판',
+    DTL_ADRES: '서울시 영등포구 중앙로 89',
+    ConnModel: 'EWDPL_LAN',
+    ConnIP: '192.168.1.104',
+    ConnPort: '5000',
+    SizeX: 320,
+    SizeY: 64,
+    LastStatus: 'ok',
+    USE_YN: '1',
+  },
+];
+
+// -------------- 시나리오 샘플 (display) --------------
+export const MOCK_DISPLAY_SCENARIOS: DisplayScenario[] = [
+  {
+    DisCode: 1,
+    CD_DIST_OBSV: '1001',
+    SaveType: 'local',
+    DisEffect: '1',
+    DisSpeed: '5',
+    DisTime: 5,
+    EndEffect: '1',
+    EndSpeed: '5',
+    StrTime: '2026-01-01 00:00:00',
+    EndTime: '2026-12-31 23:59:59',
+    Relay: '0',
+    ViewImg: 'displayImage/1001_text_20260101.png',
+    SendImg: 'displayImage/1001_thumb_20260101.png',
+    HtmlData: '<p style="color:white">수위 안전</p>',
+    DisType: 'ad',
+    Exp_YN: 'Y',
+    RegDate: '2026-01-01 09:00:00',
+  },
+  {
+    DisCode: 2,
+    CD_DIST_OBSV: '1001',
+    SaveType: 'local',
+    DisEffect: '2',
+    DisSpeed: '3',
+    DisTime: 10,
+    EndEffect: '5',
+    EndSpeed: '3',
+    StrTime: '2026-03-01 00:00:00',
+    EndTime: '2026-03-31 23:59:59',
+    Relay: '8',
+    ViewImg: 'displayImage/1001_text_20260301.png',
+    SendImg: 'displayImage/1001_thumb_20260301.png',
+    HtmlData: '<p style="color:red">주의보 발령</p>',
+    DisType: 'ad',
+    Exp_YN: 'Y',
+    RegDate: '2026-03-01 10:00:00',
+  },
+  {
+    DisCode: 3,
+    CD_DIST_OBSV: '1002',
+    SaveType: 'local',
+    DisEffect: '1',
+    DisSpeed: '5',
+    DisTime: 5,
+    EndEffect: '5',
+    EndSpeed: '5',
+    StrTime: '2026-02-01 00:00:00',
+    EndTime: '2026-02-28 23:59:59',
+    Relay: '0',
+    ViewImg: 'displayImage/1002_text_20260201.png',
+    SendImg: 'displayImage/1002_thumb_20260201.png',
+    HtmlData: '<p style="color:yellow">하천 접근 금지</p>',
+    DisType: 'ad',
+    Exp_YN: 'N',
+    RegDate: '2026-02-01 08:00:00',
+  },
+  {
+    DisCode: 4,
+    CD_DIST_OBSV: '1001',
+    SaveType: 'local',
+    DisEffect: '3',
+    DisSpeed: '4',
+    DisTime: 8,
+    EndEffect: '3',
+    EndSpeed: '4',
+    StrTime: '2025-06-01 00:00:00',
+    EndTime: '2025-12-31 23:59:59',
+    Relay: '5',
+    ViewImg: 'displayImage/1001_text_20250601.png',
+    SendImg: 'displayImage/1001_thumb_20250601.png',
+    HtmlData: '<p style="color:green">안전 구간</p>',
+    DisType: 'ad',
+    Exp_YN: 'N',
+    RegDate: '2025-06-01 09:00:00',
+  },
+];
+
+// -------------- 지정문구 샘플 (display) --------------
+export const MOCK_DISPLAY_MENTS: DisplayMent[] = [
+  {
+    disCode: 1,
+    Title: '안전 안내',
+    HtmlData: '<p style="color:white">현재 수위 안전합니다</p>',
+  },
+  {
+    disCode: 2,
+    Title: '주의보 발령',
+    HtmlData: '<p style="color:yellow">주의보가 발령되었습니다</p>',
+  },
+  {
+    disCode: 3,
+    Title: '경보 발령',
+    HtmlData: '<p style="color:red">경보가 발령되었습니다. 대피하세요</p>',
+  },
+  {
+    disCode: 4,
+    Title: '해제 안내',
+    HtmlData: '<p style="color:white">경보가 해제되었습니다</p>',
   },
 ];

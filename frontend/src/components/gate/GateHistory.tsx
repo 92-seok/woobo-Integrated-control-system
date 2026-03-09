@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -8,15 +8,37 @@ import { GATE_STATUS_CONFIG, GSTATUS_CONFIG } from '@/types/gate';
 
 const PER_PAGE = 10;
 
-interface GateHistoryProps {
-  history: GateControlHistory[];
-}
-
-export function GateHistory({ history }: GateHistoryProps) {
+export function GateHistory() {
+  const [history, setHistory] = useState<GateControlHistory[]>([]);
   // 기본값: 7일 전 ~ 오늘
   const [startDate, setStartDate] = useState(() => new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10));
   const [endDate, setEndDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [page, setPage] = useState(1);
+
+  // API 제어 이력
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const response = await fetch('/api/gate', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`서버 오류 (${response.status}: ${errorText})`);
+        }
+
+        const data: GateControlHistory[] = await response.json();
+        setHistory(data);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : '알 수 없는 오류';
+        console.error('제어이력 조회 실패: ', message);
+      }
+    };
+
+    fetchHistory();
+  }, []);
 
   // 날짜 필터링
   const filtered = useMemo(() => {
@@ -64,18 +86,18 @@ export function GateHistory({ history }: GateHistoryProps) {
         <Table className="table-fixed">
           <colgroup>
             <col className="w-12" />
-            <col />
-            <col className="w-24" />
-            <col className="w-24" />
-            <col className="w-44" />
+            <col className="w-12" />
+            <col className="w-60" />
+            <col className="w-12" />
+            <col className="w-12" />
           </colgroup>
           <TableHeader>
             <TableRow className="bg-muted/30 hover:bg-muted/30">
               <TableHead className="px-3 py-2.5 text-center text-xs">No</TableHead>
               <TableHead className="px-3 py-2.5 text-center text-xs">차단기명</TableHead>
-              <TableHead className="px-3 py-2.5 text-center text-xs">제어</TableHead>
-              <TableHead className="px-3 py-2.5 text-center text-xs">처리상태</TableHead>
               <TableHead className="px-3 py-2.5 text-center text-xs">일시</TableHead>
+              <TableHead className="px-3 py-2.5 text-center text-xs">동작상태</TableHead>
+              <TableHead className="px-3 py-2.5 text-center text-xs">처리상태</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -96,14 +118,14 @@ export function GateHistory({ history }: GateHistoryProps) {
                     <TableCell className="px-3 py-3 text-center font-medium">
                       {item.NM_DIST_OBSV ?? item.CD_DIST_OBSV}
                     </TableCell>
+                    <TableCell className="text-muted-foreground px-3 py-3 text-center text-sm">
+                      {item.RegDate}
+                    </TableCell>
                     <TableCell className="px-3 py-3 text-center">
                       <span className={cn('text-sm font-semibold', gateInfo.color)}>{gateInfo.label}</span>
                     </TableCell>
                     <TableCell className="px-3 py-3 text-center">
                       <span className={cn('text-sm font-semibold', statusInfo.color)}>{statusInfo.label}</span>
-                    </TableCell>
-                    <TableCell className="text-muted-foreground px-3 py-3 text-center text-sm">
-                      {item.RegDate}
                     </TableCell>
                   </TableRow>
                 );

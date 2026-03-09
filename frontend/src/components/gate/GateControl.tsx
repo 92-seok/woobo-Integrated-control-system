@@ -3,7 +3,7 @@ import { ShieldCheck, Info, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import type { GateEquipment, GateStatus } from '@/types/gate';
+import type { GateEquipment, GateSendDto, GateStatus } from '@/types/gate';
 import { GATE_STATUS_CONFIG } from '@/types/gate';
 
 interface GateControlProps {
@@ -14,12 +14,44 @@ interface GateControlProps {
 
 export function GateControl({ equipments, statuses, onStatusChange }: GateControlProps) {
   const [helpOpen, setHelpOpen] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+
   // 각 차단기의 현재 상태를 Map으로 관리
   const statusMap = new Map(statuses.map((s) => [s.CD_DIST_OBSV, s.Gate]));
 
-  const handleToggle = (code: string, gate: 'open' | 'close') => {
+  const handleToggle = async (code: string, gate: 'open' | 'close') => {
     if (!confirm(`차단기 상태를 "${gate === 'open' ? '열림' : '닫힘'}"으로 변경하시겠습니까?`)) return;
-    onStatusChange(code, gate);
+
+    const equip = equipments.find((e) => e.CD_DIST_OBSV === code);
+    if (!equip) return;
+
+    const payload: GateSendDto = {
+      Devices: [code],
+      Gate: gate,
+      Status: 'start',
+    };
+
+    setIsSending(true);
+
+    try {
+      const response = await fetch('/api/gate/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`서버 오류 (${response.status}: ${errorText})`);
+      }
+      onStatusChange(code, gate);
+      alert('차단기 상태가 변경되었습니다.');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.';
+      alert(`제어 실패: ${message}`);
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
@@ -36,19 +68,21 @@ export function GateControl({ equipments, statuses, onStatusChange }: GateContro
 
         <Table className="table-fixed">
           <colgroup>
-            <col className="w-12" />
-            <col />
-            <col />
-            <col className="w-40" />
             <col className="w-20" />
+            <col />
+            <col />
+            <col className="w-80" />
+            <col className="w-80" />
+            <col className="w-40" />
           </colgroup>
           <TableHeader>
             <TableRow className="bg-muted/30 hover:bg-muted/30">
               <TableHead className="px-3 py-2.5 text-center text-xs">No</TableHead>
               <TableHead className="px-3 py-2.5 text-center text-xs">차단기명</TableHead>
               <TableHead className="hidden px-3 py-2.5 text-center text-xs md:table-cell">주소</TableHead>
-              <TableHead className="px-3 py-2.5 text-center text-xs">상태 변경</TableHead>
-              <TableHead className="px-3 py-2.5 text-center text-xs">현재 상태</TableHead>
+              <TableHead className="px-3 py-2.5 text-center text-xs">통신시간</TableHead>
+              <TableHead className="px-3 py-2.5 text-center text-xs">상태변경</TableHead>
+              <TableHead className="px-3 py-2.5 text-center text-xs">현재상태</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -63,6 +97,9 @@ export function GateControl({ equipments, statuses, onStatusChange }: GateContro
                   <TableCell className="text-muted-foreground hidden px-3 py-3 text-center text-sm md:table-cell">
                     {equip.DTL_ADRES}
                   </TableCell>
+                  <TableCell className="px-3 py-3 text-center font-medium">
+                    {statuses.find((s) => s.CD_DIST_OBSV === equip.CD_DIST_OBSV)?.RegDate ?? '-'}
+                  </TableCell>
                   <TableCell className="px-3 py-3 text-center">
                     <div className="flex items-center justify-center gap-2">
                       <Button
@@ -70,6 +107,7 @@ export function GateControl({ equipments, statuses, onStatusChange }: GateContro
                         variant={currentGate === 'open' ? 'default' : 'outline'}
                         onClick={() => handleToggle(equip.CD_DIST_OBSV, 'open')}
                         className="w-16"
+                        disabled={isSending}
                       >
                         열림
                       </Button>

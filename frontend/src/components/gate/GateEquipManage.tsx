@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Plus, Pencil, Trash2, Server, MapPin, Wifi } from 'lucide-react';
+import { Plus, Pencil, Trash2, Server } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import type { GateEquipment } from '@/types/gate';
@@ -8,24 +8,27 @@ import type { GateEquipment } from '@/types/gate';
 interface GateEquipManageProps {
   equipments: GateEquipment[];
   onEquipmentsChange: (equipments: GateEquipment[]) => void;
+  onRefresh: () => void;
 }
 
 type FormMode = 'idle' | 'add' | 'edit';
 
-const EMPTY_FORM: GateEquipment = {
+const STATUS_FORM: GateEquipment = {
   CD_DIST_OBSV: '',
   NM_DIST_OBSV: '',
+  DTL_ADRES: '',
+  LastDate: new Date(),
   ConnIP: '',
   ConnPort: '',
-  DTL_ADRES: '',
-  LAT: '',
-  LON: '',
-  USE_YN: '1',
+  Gate: '',
+  Light: '',
+  Sound: '',
+  Status: '',
 };
 
-export function GateEquipManage({ equipments, onEquipmentsChange }: GateEquipManageProps) {
+export function GateEquipManage({ equipments, onEquipmentsChange, onRefresh }: GateEquipManageProps) {
   const [mode, setMode] = useState<FormMode>('idle');
-  const [form, setForm] = useState<GateEquipment>(EMPTY_FORM);
+  const [form, setForm] = useState<GateEquipment>(STATUS_FORM);
   const [editCode, setEditCode] = useState<string | null>(null);
 
   // 입력 핸들러
@@ -36,7 +39,7 @@ export function GateEquipManage({ equipments, onEquipmentsChange }: GateEquipMan
   // 등록 시작
   const handleAddStart = () => {
     setMode('add');
-    setForm(EMPTY_FORM);
+    setForm(STATUS_FORM);
     setEditCode(null);
   };
 
@@ -49,18 +52,13 @@ export function GateEquipManage({ equipments, onEquipmentsChange }: GateEquipMan
 
   // 저장 (등록/수정)
   const handleSave = () => {
-    if (!form.NM_DIST_OBSV.trim() || !form.ConnIP.trim()) {
+    if (!form.NM_DIST_OBSV.trim()) {
       alert('차단기명과 IP는 필수 입력입니다.');
       return;
     }
 
     if (mode === 'add') {
-      // IP 마지막 3자리로 코드 생성 (PHP 로직 동일)
-      const ipParts = form.ConnIP.split('.');
-      const lastOctet = ipParts[ipParts.length - 1].padStart(3, '0');
-      const newCode = `0${lastOctet}`;
-      const newEquip = { ...form, CD_DIST_OBSV: newCode };
-      onEquipmentsChange([...equipments, newEquip]);
+      onEquipmentsChange([...equipments, form]);
       // TODO: API 연동 시 POST /api/gate { saveType: 'insert', ... }
     } else {
       onEquipmentsChange(equipments.map((e) => (e.CD_DIST_OBSV === editCode ? { ...form } : e)));
@@ -68,9 +66,10 @@ export function GateEquipManage({ equipments, onEquipmentsChange }: GateEquipMan
     }
 
     setMode('idle');
-    setForm(EMPTY_FORM);
+    setForm(STATUS_FORM);
     setEditCode(null);
     alert('저장되었습니다.');
+    onRefresh();
   };
 
   // 삭제 (비활성화)
@@ -79,12 +78,13 @@ export function GateEquipManage({ equipments, onEquipmentsChange }: GateEquipMan
     onEquipmentsChange(equipments.filter((e) => e.CD_DIST_OBSV !== code));
     // TODO: API 연동 시 POST /api/gate { saveType: 'delete', num: code }
     alert('삭제되었습니다.');
+    onRefresh();
   };
 
   // 취소
   const handleCancel = () => {
     setMode('idle');
-    setForm(EMPTY_FORM);
+    setForm(STATUS_FORM);
     setEditCode(null);
   };
 
@@ -111,7 +111,7 @@ export function GateEquipManage({ equipments, onEquipmentsChange }: GateEquipMan
             <col className="w-12" />
             <col className="w-20" />
             <col />
-            <col />
+            <col className="w-28" />
             <col />
             <col className="w-24" />
           </colgroup>
@@ -131,9 +131,7 @@ export function GateEquipManage({ equipments, onEquipmentsChange }: GateEquipMan
                 <TableCell className="px-3 py-3 text-center text-sm">{idx + 1}</TableCell>
                 <TableCell className="px-3 py-3 text-center font-mono text-xs">{equip.CD_DIST_OBSV}</TableCell>
                 <TableCell className="px-3 py-3 text-center font-medium">{equip.NM_DIST_OBSV}</TableCell>
-                <TableCell className="text-muted-foreground hidden px-3 py-3 text-center text-sm lg:table-cell">
-                  {equip.ConnIP}:{equip.ConnPort}
-                </TableCell>
+                <TableCell className="px-3 py-3 text-center font-medium">{equip.ConnIP ?? '-'}</TableCell>
                 <TableCell className="text-muted-foreground hidden px-3 py-3 text-center text-sm md:table-cell">
                   {equip.DTL_ADRES}
                 </TableCell>
@@ -171,7 +169,6 @@ export function GateEquipManage({ equipments, onEquipmentsChange }: GateEquipMan
               </p>
 
               <div className="flex flex-col gap-4">
-                {/* 기본 정보 */}
                 <div>
                   <label className="mb-1 block text-xs font-medium text-gray-600">차단기명 *</label>
                   <input
@@ -182,77 +179,15 @@ export function GateEquipManage({ equipments, onEquipmentsChange }: GateEquipMan
                     placeholder="예: 강남1차단기"
                   />
                 </div>
-
-                {/* 연결 정보 */}
-                <div className="rounded-md border border-gray-200 bg-gray-50/50 p-3">
-                  <div className="mb-2 flex items-center gap-1.5 text-xs font-semibold text-gray-500">
-                    <Wifi className="h-3.5 w-3.5" />
-                    연결 정보
-                  </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="mb-1 block text-xs font-medium text-gray-600">IP 주소 *</label>
-                      <input
-                        type="text"
-                        value={form.ConnIP}
-                        onChange={(e) => updateField('ConnIP', e.target.value)}
-                        className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500"
-                        placeholder="192.168.83.213"
-                      />
-                    </div>
-                    <div>
-                      <label className="mb-1 block text-xs font-medium text-gray-600">포트</label>
-                      <input
-                        type="text"
-                        value={form.ConnPort}
-                        onChange={(e) => updateField('ConnPort', e.target.value)}
-                        className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500"
-                        placeholder="9008"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* 위치 정보 */}
-                <div className="rounded-md border border-gray-200 bg-gray-50/50 p-3">
-                  <div className="mb-2 flex items-center gap-1.5 text-xs font-semibold text-gray-500">
-                    <MapPin className="h-3.5 w-3.5" />
-                    위치 정보
-                  </div>
-                  <div className="flex flex-col gap-3">
-                    <div>
-                      <label className="mb-1 block text-xs font-medium text-gray-600">주소</label>
-                      <input
-                        type="text"
-                        value={form.DTL_ADRES}
-                        onChange={(e) => updateField('DTL_ADRES', e.target.value)}
-                        className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500"
-                        placeholder="서울시 강남구 역삼동 123-4"
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <label className="mb-1 block text-xs font-medium text-gray-600">위도</label>
-                        <input
-                          type="text"
-                          value={form.LAT}
-                          onChange={(e) => updateField('LAT', e.target.value)}
-                          className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500"
-                          placeholder="37.5012"
-                        />
-                      </div>
-                      <div>
-                        <label className="mb-1 block text-xs font-medium text-gray-600">경도</label>
-                        <input
-                          type="text"
-                          value={form.LON}
-                          onChange={(e) => updateField('LON', e.target.value)}
-                          className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500"
-                          placeholder="127.0396"
-                        />
-                      </div>
-                    </div>
-                  </div>
+                <div>
+                  <label className="mb-1 block text-xs font-medium text-gray-600">주소</label>
+                  <input
+                    type="text"
+                    value={form.DTL_ADRES}
+                    onChange={(e) => updateField('DTL_ADRES', e.target.value)}
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500"
+                    placeholder="서울시 강남구 역삼동 123-4"
+                  />
                 </div>
               </div>
 

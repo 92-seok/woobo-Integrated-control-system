@@ -1,7 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ShieldCheck, Clock, Server } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { MOCK_GATE_EQUIPMENTS, MOCK_GATE_STATUSES, MOCK_GATE_HISTORY } from '@/mocks/mock';
 import type { GateEquipment, GateStatus } from '@/types/gate';
 import { GateControl } from '@/components/gate/GateControl';
 import { GateHistory } from '@/components/gate/GateHistory';
@@ -14,24 +13,68 @@ const tabs: { value: TabValue; label: string; icon: typeof ShieldCheck }[] = [
   { value: 'history', label: '제어이력', icon: Clock },
   { value: 'equip', label: '장비관리', icon: Server },
 ];
-export function GatePage() {
-  const [activeTab, setActiveTab] = useState<TabValue>('control');
 
+// API 응답의 CD_DIST_OBSV, LastDate 문자열 -> Date 객체 변환
+function mapEquipment(raw: Record<string, unknown>): GateEquipment {
+  return {
+    CD_DIST_OBSV: (raw.CD_DIST_OBSV as string) ?? '',
+    NM_DIST_OBSV: (raw.NM_DIST_OBSV as string) ?? '',
+    DTL_ADRES: (raw.DTL_ADRES as string) ?? '',
+    LastDate: new Date(raw.LastDate as string),
+    ConnIP: (raw.ConnIP as string) ?? '',
+    ConnPort: (raw.ConnPort as string) ?? '',
+    Gate: (raw.Gate as string) ?? '',
+    Light: (raw.Light as string) ?? '',
+    Sound: (raw.Sound as string) ?? '',
+    Status: (raw.Status as string) ?? '',
+  };
+}
+
+export function GatePage() {
   // 상태 중앙관리
-  const [equipments, setEquipments] = useState<GateEquipment[]>(MOCK_GATE_EQUIPMENTS);
-  const [statuses, setStatuses] = useState<GateStatus[]>(MOCK_GATE_STATUSES);
-  const [history] = useState(MOCK_GATE_HISTORY);
+  const [activeTab, setActiveTab] = useState<TabValue>('control');
+  const [equipments, setEquipments] = useState<GateEquipment[]>([]);
+  const [statuses, setStatuses] = useState<GateStatus[]>([]);
+
+  const fetchEquipments = () => {
+    fetch('/api/gate/status', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((data: Record<string, unknown>[]) => {
+        setEquipments(data.map(mapEquipment));
+        // 응답의 Gate 값으로 statuses 동기화
+        setStatuses(
+          data.map((item) => ({
+            CD_DIST_OBSV: (item.CD_DIST_OBSV as string) ?? '',
+            Gate: (item.Gate as 'open' | 'close') ?? 'open',
+            RegDate: (item.LastDate as string) ?? '',
+          }))
+        );
+      })
+      .catch(console.error);
+  };
+
+  useEffect(() => {
+    fetchEquipments();
+    const interval = setInterval(fetchEquipments, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   // 차단기 상태 변경 핸들러
   const handleStatusChange = (code: string, gate: 'open' | 'close') => {
-    setStatuses((prev) =>
-      prev.map((s) =>
-        s.CD_DIST_OBSV === code
-          ? { ...s, Gate: gate, RegDate: new Date().toISOString().slice(0, 19).replace('T', ' ') }
-          : s
-      )
-    );
-    // TODO: API 연동 시 POST /api/gate { saveType: 'save', num: code, gate }
+    setStatuses((prev) => {
+      const exists = prev.some((s) => s.CD_DIST_OBSV === code);
+      const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+      if (exists) {
+        return prev.map((s) => (s.CD_DIST_OBSV === code ? { ...s, Gate: gate, RegDate: now } : s));
+      }
+      return [...prev, { CD_DIST_OBSV: code, Gate: gate, RegDate: now }];
+    });
   };
 
   return (
@@ -87,8 +130,10 @@ export function GatePage() {
           {activeTab === 'control' && (
             <GateControl equipments={equipments} statuses={statuses} onStatusChange={handleStatusChange} />
           )}
-          {activeTab === 'history' && <GateHistory history={history} />}
-          {activeTab === 'equip' && <GateEquipManage equipments={equipments} onEquipmentsChange={setEquipments} />}
+          {activeTab === 'history' && <GateHistory />}
+          {activeTab === 'equip' && (
+            <GateEquipManage equipments={equipments} onEquipmentsChange={setEquipments} onRefresh={fetchEquipments} />
+          )}
         </div>
       </div>
     </div>

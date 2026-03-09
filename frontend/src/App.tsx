@@ -7,6 +7,7 @@ import { GatePage } from '@/pages/GatePage';
 import { ParkingPage } from '@/pages/ParkingPage';
 import { ReportPage } from '@/pages/ReportPage';
 import { DataPage } from '@/pages/DataPage';
+// import { DisplayPage } from '@/pages/DisplayPage';
 import './App.css';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path="/gate" element={<GatePage />} />
         <Route path="/parking" element={<ParkingPage />} />
         <Route path="/report" element={<ReportPage />} />
+        {/* <Route path="/display" element={<DisplayPage />} /> */}
       </Route>
     </Routes>
   );
