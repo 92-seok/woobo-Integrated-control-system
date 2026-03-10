@@ -146,7 +146,7 @@ export function ContactsManager({ onRefresh }: ContactsManagerProps) {
           <col className="w-30" />
           <col className="w-30" />
           <col className="w-40" />
-          <col className="w-50" />
+          <col className="w-12" />
         </colgroup>
         <TableHeader>
           <TableRow className="border-border bg-muted/30 hover:bg-muted/30">
@@ -293,11 +293,7 @@ export function ContactsManager({ onRefresh }: ContactsManagerProps) {
                 <Button variant="outline" size="sm" onClick={() => setModalOpen(false)}>
                   취소
                 </Button>
-                <Button
-                  variant={modalMode === 'delete' ? 'destructive' : 'default'}
-                  size="sm"
-                  onClick={handleSubmit}
-                >
+                <Button variant={modalMode === 'delete' ? 'destructive' : 'default'} size="sm" onClick={handleSubmit}>
                   {modalMode === 'delete' ? '삭제' : '저장'}
                 </Button>
               </div>

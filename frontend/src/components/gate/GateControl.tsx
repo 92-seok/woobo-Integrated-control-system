@@ -69,10 +69,11 @@ export function GateControl({ equipments, statuses, onStatusChange }: GateContro
         <Table className="table-fixed">
           <colgroup>
             <col className="w-20" />
-            <col />
-            <col />
             <col className="w-80" />
             <col className="w-80" />
+            <col className="w-100" />
+            <col className="w-80" />
+            <col className="w-40" />
             <col className="w-40" />
           </colgroup>
           <TableHeader>
@@ -83,6 +84,7 @@ export function GateControl({ equipments, statuses, onStatusChange }: GateContro
               <TableHead className="px-3 py-2.5 text-center text-xs">통신시간</TableHead>
               <TableHead className="px-3 py-2.5 text-center text-xs">상태변경</TableHead>
               <TableHead className="px-3 py-2.5 text-center text-xs">현재상태</TableHead>
+              <TableHead className="px-3 py-2.5 text-center text-xs">처리상태</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -123,6 +125,13 @@ export function GateControl({ equipments, statuses, onStatusChange }: GateContro
                   </TableCell>
                   <TableCell className="px-3 py-3 text-center">
                     <span className={cn('text-sm font-semibold', statusInfo.color)}>{statusInfo.label}</span>
+                  </TableCell>
+                  <TableCell className="px-3 py-3 text-center">
+                    {equip.Status === '제어완료' ? (
+                      <span className="text-sm font-semibold text-emerald-600">완료</span>
+                    ) : (
+                      <span className="text-sm font-semibold text-gray-500">대기</span>
+                    )}
                   </TableCell>
                 </TableRow>
               );

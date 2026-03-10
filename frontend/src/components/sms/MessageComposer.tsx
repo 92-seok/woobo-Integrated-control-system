@@ -6,7 +6,7 @@ import type { Recipient } from './RecipientTable';
 
 const MAX_CHARS = 70;
 const MAX_TITLE = 30;
-const SMS_API_URL = '/api/sms';
+const SMS_API_URL = '/api/sms/send';
 
 interface MessageComposerProps {
   selectedRecipients: Recipient[];
@@ -46,9 +46,9 @@ export function MessageComposer({ selectedRecipients }: MessageComposerProps) {
 
     // API 요청 Payload 구성
     const payload = {
+      Devices: selectedRecipients.map((r) => r.PhoneNumber),
+      Content: body.trim(),
       title: title.trim(),
-      PhoneNumber: selectedRecipients.map((r) => r.PhoneNumber),
-      Message: body.trim(),
       Auth: '관리자',
     };
 

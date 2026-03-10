@@ -87,9 +87,9 @@ export function GateHistory() {
           <colgroup>
             <col className="w-12" />
             <col className="w-12" />
-            <col className="w-60" />
-            <col className="w-12" />
-            <col className="w-12" />
+            <col className="w-80" />
+            <col className="w-40" />
+            <col className="w-20" />
           </colgroup>
           <TableHeader>
             <TableRow className="bg-muted/30 hover:bg-muted/30">

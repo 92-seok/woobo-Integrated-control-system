@@ -90,12 +90,7 @@ export function SendHistory() {
             {history.length}건
           </span>
         </div>
-        <Button
-          variant="destructive"
-          size="sm"
-          onClick={handleDelete}
-          disabled={selectedIds.size === 0}
-        >
+        <Button variant="destructive" size="sm" onClick={handleDelete} disabled={selectedIds.size === 0}>
           <Trash2 className="h-3.5 w-3.5" />
           {selectedIds.size > 0 ? `${selectedIds.size}건 삭제` : '삭제'}
         </Button>
@@ -172,13 +167,13 @@ export function SendHistory() {
                   {item.DataIng}
                 </TableCell>
                 <TableCell className="font-mono-data text-muted-foreground px-3 py-3 text-center text-xs">
+                  {item.DataSuccess}
+                </TableCell>
+                <TableCell className="font-mono-data text-muted-foreground px-3 py-3 text-center text-xs">
                   {item.DataFail}
                 </TableCell>
                 <TableCell className="font-mono-data text-muted-foreground px-3 py-3 text-center text-xs">
                   {item.DataError}
-                </TableCell>
-                <TableCell className="font-mono-data text-muted-foreground px-3 py-3 text-center text-xs">
-                  {item.DataSuccess}
                 </TableCell>
               </TableRow>
             );
